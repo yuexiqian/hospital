@@ -96,7 +96,22 @@
 	quidu      	"691C6B1402FA"
 	logical_models 	(list unit_reference_list
 	    (object Class "医生是是是"
-		quid       	"691C6B2C013E"))
+		quid       	"691C6B2C013E")
+	    (object Class "NewInterface"
+		quid       	"691C782701B3"
+		stereotype 	"Interface")
+	    (object Association "$UNNAMED$0"
+		quid       	"691C782A0217"
+		roles      	(list role_list
+		    (object Role "$UNNAMED$1"
+			quid       	"691C782B0177"
+			supplier   	"Logical View::NewInterface"
+			quidu      	"691C782701B3"
+			is_navigable 	TRUE)
+		    (object Role "$UNNAMED$2"
+			quid       	"691C782B017B"
+			supplier   	"Logical View::医生是是是"
+			quidu      	"691C6B2C013E"))))
 	logical_presentations 	(list unit_reference_list
 	    (object ClassDiagram "Main"
 		quid       	"691C6B140308"
@@ -111,7 +126,7 @@
 			ShowCompartmentStereotypes 	TRUE
 			IncludeAttribute 	TRUE
 			IncludeOperation 	TRUE
-			location   	(372, 359)
+			location   	(372, 356)
 			font       	(object Font
 			    size       	10
 			    face       	"Arial"
@@ -123,7 +138,7 @@
 			    default_color 	TRUE)
 			label      	(object ItemLabel
 			    Parent_View 	@1
-			    location   	(231, 308)
+			    location   	(231, 305)
 			    fill_color 	13434879
 			    nlines     	1
 			    max_width  	282
@@ -136,7 +151,77 @@
 			width      	300
 			height     	126
 			annotation 	8
-			autoResize 	TRUE)))))
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::NewInterface" @2
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1763, 519)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@2
+			    location   	(1762, 627)
+			    anchor_loc 	1
+			    nlines     	2
+			    max_width  	226
+			    justify    	0
+			    label      	"NewInterface")
+			icon       	"Interface"
+			icon_style 	"Icon"
+			line_color 	3342489
+			fill_color 	13434879
+			quidu      	"691C782701B3"
+			width      	58
+			height     	58
+			annotation 	8
+			autoResize 	TRUE)
+		    (object AssociationViewNew "$UNNAMED$0" @3
+			location   	(1128, 442)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"691C782A0217"
+			roleview_list 	(list RoleViews
+			    (object RoleView "$UNNAMED$1" @4
+				Parent_View 	@3
+				location   	(756, 86)
+				stereotype 	TRUE
+				line_color 	3342489
+				quidu      	"691C782B0177"
+				client     	@3
+				supplier   	@2
+				vertices   	(list Points
+				    (1128, 442)
+				    (1734, 512))
+				line_style 	0)
+			    (object RoleView "$UNNAMED$2" @5
+				Parent_View 	@3
+				location   	(756, 86)
+				stereotype 	TRUE
+				line_color 	3342489
+				quidu      	"691C782B017B"
+				client     	@3
+				supplier   	@1
+				vertices   	(list Points
+				    (1128, 442)
+				    (522, 372))
+				line_style 	0)))))))
     root_subsystem 	(object SubSystem "Component View"
 	quid       	"691C6B1402FA"
 	physical_models 	(list unit_reference_list)
