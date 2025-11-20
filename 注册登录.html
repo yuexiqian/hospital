@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>医院智能挂号系统</title>
+    <!-- 外部资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind 配置 -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#165DFF",
+              secondary: "#36D399",
+              danger: "#F87272",
+              warning: "#FBBD23",
+              info: "#3ABFF8",
+              light: "#F9FAFB",
+              dark: "#1E293B",
+            },
+            fontFamily: {
+              inter: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+        .card-shadow {
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        .btn-hover {
+          @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+        }
+        .page-transition {
+          @apply transition-opacity duration-300;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-inter bg-gray-50 text-dark min-h-screen">
+    <div
+      id="app"
+      class="max-w-md mx-auto bg-white min-h-screen relative overflow-hidden"
+    >
+      <!-- 登录页面 -->
+      <div id="login-page" class="page active min-h-screen flex flex-col">
+        <!-- 顶部区域 -->
+        <div
+          class="bg-primary text-white p-8 text-center relative overflow-hidden"
+        >
+          <div class="absolute inset-0 opacity-10">
+            <i
+              class="fa fa-hospital-o absolute text-[200px] -top-20 -left-20"
+            ></i>
+          </div>
+          <h1 class="text-[clamp(1.5rem,5vw,2.5rem)] font-bold relative z-10">
+            智能挂号系统
+          </h1>
+          <p class="mt-2 opacity-90 relative z-10">便捷就医，智慧诊疗</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <div class="flex-grow p-6 flex flex-col justify-center">
+          <form id="login-form" class="space-y-5">
+            <div>
+              <label
+                for="login-phone"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >手机号</label
+              >
+              <div class="relative">
+                <span
+                  class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  >+86</span
+                >
+                <input
+                  type="tel"
+                  id="login-phone"
+                  placeholder="请输入手机号"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  pattern="^1[3-9]\d{9}$"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="login-password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >密码</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="login-password"
+                  placeholder="请输入密码"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                >
+                  <i class="fa fa-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                />
+                <label
+                  for="remember-me"
+                  class="ml-2 block text-sm text-gray-700"
+                  >记住我</label
+                >
+              </div>
+              <a
+                href="#"
+                class="text-sm text-primary hover:text-primary/80 transition-colors"
+                >忘记密码？</a
+              >
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary text-white py-3 rounded-lg font-medium btn-hover shadow-md"
+            >
+              登录
+            </button>
+
+            <div class="text-center text-sm text-gray-600">
+              还没有账号？
+              <a href="#" id="to-register" class="text-primary hover:underline"
+                >立即注册</a
+              >
+            </div>
+          </form>
+        </div>
+
+        <!-- 底部信息 -->
+        <div
+          class="p-4 text-center text-xs text-gray-500 border-t border-gray-100"
+        >
+          <p>© 2023 医院智能挂号系统 版权所有</p>
+        </div>
+      </div>
+
+      <!-- 注册页面 -->
+      <div id="register-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部区域 -->
+        <div
+          class="bg-primary text-white p-6 text-center relative overflow-hidden"
+        >
+          <div class="absolute inset-0 opacity-10">
+            <i
+              class="fa fa-user-plus absolute text-[200px] -top-20 -right-20"
+            ></i>
+          </div>
+          <h1 class="text-xl font-bold relative z-10">账号注册</h1>
+          <p class="mt-1 opacity-90 text-sm relative z-10">
+            注册后即可享受便捷挂号服务
+          </p>
+        </div>
+
+        <!-- 注册表单 -->
+        <div class="flex-grow p-6 overflow-y-auto">
+          <form id="register-form" class="space-y-5">
+            <div>
+              <label
+                for="reg-phone"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >手机号</label
+              >
+              <div class="relative">
+                <span
+                  class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  >+86</span
+                >
+                <input
+                  type="tel"
+                  id="reg-phone"
+                  placeholder="请输入手机号"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  pattern="^1[3-9]\d{9}$"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="verify-code"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >验证码</label
+              >
+              <div class="flex space-x-2">
+                <input
+                  type="text"
+                  id="verify-code"
+                  placeholder="请输入验证码"
+                  class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  id="send-code"
+                  class="whitespace-nowrap px-4 py-3 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-colors"
+                >
+                  发送验证码
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="reg-password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >设置密码</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="reg-password"
+                  placeholder="请设置密码"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                >
+                  <i class="fa fa-eye-slash"></i>
+                </button>
+              </div>
+              <p class="mt-1 text-xs text-gray-500">
+                密码长度为6-16位，包含字母和数字
+              </p>
+            </div>
+
+            <div>
+              <label
+                for="confirm-password"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >确认密码</label
+              >
+              <div class="relative">
+                <input
+                  type="password"
+                  id="confirm-password"
+                  placeholder="请再次输入密码"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                >
+                  <i class="fa fa-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <input
+                type="checkbox"
+                id="agree-terms"
+                class="h-4 w-4 mt-1 text-primary focus:ring-primary border-gray-300 rounded"
+                required
+              />
+              <label for="agree-terms" class="ml-2 block text-sm text-gray-700">
+                我已阅读并同意<a href="#" class="text-primary hover:underline"
+                  >《用户服务协议》</a
+                >和<a href="#" class="text-primary hover:underline"
+                  >《隐私政策》</a
+                >
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary text-white py-3 rounded-lg font-medium btn-hover shadow-md"
+            >
+              注册
+            </button>
+
+            <div class="text-center text-sm text-gray-600">
+              已有账号？
+              <a href="#" id="to-login" class="text-primary hover:underline"
+                >立即登录</a
+              >
+            </div>
+          </form>
+        </div>
+
+        <!-- 底部信息 -->
+        <div
+          class="p-4 text-center text-xs text-gray-500 border-t border-gray-100"
+        >
+          <p>© 2023 医院智能挂号系统 版权所有</p>
+        </div>
+      </div>
+
+      <!-- 首页 -->
+      <div id="home-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部搜索栏 -->
+        <header class="bg-primary text-white p-4 sticky top-0 z-10">
+          <div class="flex items-center justify-between">
+            <h1 class="text-lg font-bold">智慧医院</h1>
+            <div class="flex items-center space-x-3">
+              <button class="text-white/80 hover:text-white transition-colors">
+                <i class="fa fa-bell-o"></i>
+              </button>
+              <div
+                class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center overflow-hidden"
+              >
+                <i class="fa fa-user"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 relative">
+            <input
+              type="text"
+              placeholder="搜索医生、科室、疾病..."
+              class="w-full py-2 px-4 pr-10 rounded-full text-gray-700 text-sm focus:outline-none"
+            />
+            <button
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- 快捷功能 -->
+        <div class="p-4 bg-gradient-to-b from-primary to-primary/80 text-white">
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              class="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+              >
+                <i class="fa fa-calendar-plus-o"></i>
+              </div>
+              <div>
+                <p class="font-medium">预约挂号</p>
+                <p class="text-xs opacity-80">快速预约专家门诊</p>
+              </div>
+            </div>
+
+            <div
+              class="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+              >
+                <i class="fa fa-stethoscope"></i>
+              </div>
+              <div>
+                <p class="font-medium">智能导诊</p>
+                <p class="text-xs opacity-80">根据症状推荐科室</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 功能区域 -->
+        <main class="flex-grow overflow-y-auto bg-gray-50">
+          <!-- 功能模块 -->
+          <div class="p-4">
+            <h2 class="text-lg font-medium mb-3">就医服务</h2>
+            <div class="grid grid-cols-3 gap-3">
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+                data-target="appointment-page"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2"
+                >
+                  <i class="fa fa-calendar text-xl"></i>
+                </div>
+                <span class="text-sm">预约挂号</span>
+              </div>
+
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+                data-target="diagnosis-page"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-info/10 flex items-center justify-center text-info mb-2"
+                >
+                  <i class="fa fa-stethoscope text-xl"></i>
+                </div>
+                <span class="text-sm">智能导诊</span>
+              </div>
+
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+                data-target="payment-page"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mb-2"
+                >
+                  <i class="fa fa-credit-card text-xl"></i>
+                </div>
+                <span class="text-sm">门诊缴费</span>
+              </div>
+
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+                data-target="medicine-page"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center text-warning mb-2"
+                >
+                  <i class="fa fa-medkit text-xl"></i>
+                </div>
+                <span class="text-sm">药品查询</span>
+              </div>
+
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+                data-target="queue-page"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2"
+                >
+                  <i class="fa fa-users text-xl"></i>
+                </div>
+                <span class="text-sm">候诊队列</span>
+              </div>
+
+              <div
+                class="function-card bg-white rounded-xl p-3 card-shadow flex flex-col items-center text-center cursor-pointer"
+              >
+                <div
+                  class="w-12 h-12 rounded-full bg-info/10 flex items-center justify-center text-info mb-2"
+                >
+                  <i class="fa fa-file-text-o text-xl"></i>
+                </div>
+                <span class="text-sm">报告查询</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 我的预约 -->
+          <div class="p-4 pt-0">
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="text-lg font-medium">我的预约</h2>
+              <a href="#" class="text-sm text-primary">查看全部</a>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 card-shadow">
+              <div class="flex items-start">
+                <div
+                  class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+                >
+                  <i class="fa fa-user-md text-xl"></i>
+                </div>
+
+                <div class="flex-grow">
+                  <div class="flex justify-between items-start">
+                    <h3 class="font-medium">内科 - 张医生</h3>
+                    <span
+                      class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full"
+                      >待就诊</span
+                    >
+                  </div>
+
+                  <p class="text-sm text-gray-500 mt-1">
+                    2023年6月15日 上午 09:30-10:00
+                  </p>
+                  <p class="text-sm text-gray-500">挂号号码: A1234</p>
+
+                  <div class="flex space-x-2 mt-3">
+                    <button
+                      class="flex-1 py-1.5 bg-primary/10 text-primary text-sm rounded-lg hover:bg-primary/20 transition-colors"
+                    >
+                      查看详情
+                    </button>
+                    <button
+                      class="flex-1 py-1.5 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      取消预约
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 医院公告 -->
+          <div class="p-4 pt-0">
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="text-lg font-medium">医院公告</h2>
+              <a href="#" class="text-sm text-primary">更多</a>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 card-shadow">
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+                >
+                  <i class="fa fa-bullhorn"></i>
+                </div>
+
+                <div class="flex-grow">
+                  <h3 class="font-medium">关于调整门诊时间的通知</h3>
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-2">
+                    为进一步优化医疗服务，满足患者就医需求，我院将于2023年7月1日起调整门诊时间，具体调整如下...
+                  </p>
+                  <p class="text-xs text-gray-400 mt-2">2023-06-10</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-primary"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 智能导诊页面 -->
+      <div id="diagnosis-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">智能导诊</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow p-4 overflow-y-auto bg-gray-50">
+          <!-- 症状描述 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">请描述您的症状</h2>
+            <textarea
+              placeholder="例如：头痛、发热、咳嗽三天..."
+              class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none h-24"
+            ></textarea>
+            <div class="flex justify-end mt-3">
+              <button
+                id="start-diagnosis"
+                class="px-4 py-2 bg-primary text-white rounded-lg btn-hover shadow-md"
+              >
+                开始智能导诊
+              </button>
+            </div>
+          </div>
+
+          <!-- 常见症状 -->
+          <div class="mb-6">
+            <h2 class="text-base font-medium mb-3">常见症状</h2>
+            <div class="flex flex-wrap gap-2">
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                头痛
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                发热
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                咳嗽
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                腹痛
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                腹泻
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                恶心呕吐
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                胸闷
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                头晕
+              </button>
+              <button
+                class="symptom-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                关节痛
+              </button>
+            </div>
+          </div>
+
+          <!-- 导诊结果 (默认隐藏) -->
+          <div id="diagnosis-result" class="hidden space-y-4">
+            <div class="bg-white rounded-xl p-4 card-shadow">
+              <div class="flex items-center justify-between mb-3">
+                <h2 class="text-base font-medium">可能的疾病</h2>
+                <span class="text-xs text-gray-500"
+                  >仅供参考，不构成医疗建议</span
+                >
+              </div>
+
+              <div class="space-y-3">
+                <div
+                  class="disease-item p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <div class="flex justify-between items-center">
+                    <h3 class="font-medium">上呼吸道感染</h3>
+                    <span
+                      class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                      >匹配度: 85%</span
+                    >
+                  </div>
+                  <p class="text-sm text-gray-500 mt-1">
+                    可能出现发热、咳嗽、咽痛等症状
+                  </p>
+                </div>
+
+                <div
+                  class="disease-item p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <div class="flex justify-between items-center">
+                    <h3 class="font-medium">流行性感冒</h3>
+                    <span
+                      class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                      >匹配度: 72%</span
+                    >
+                  </div>
+                  <p class="text-sm text-gray-500 mt-1">
+                    可能出现高热、头痛、肌肉酸痛等症状
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 推荐科室 -->
+            <div class="bg-white rounded-xl p-4 card-shadow">
+              <h2 class="text-base font-medium mb-3">推荐就诊科室</h2>
+
+              <div class="space-y-3">
+                <div
+                  class="department-item p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                    >
+                      <i class="fa fa-stethoscope"></i>
+                    </div>
+                    <div class="flex-grow">
+                      <h3 class="font-medium">呼吸内科</h3>
+                      <p class="text-xs text-gray-500 mt-1">
+                        擅长治疗呼吸系统疾病
+                      </p>
+                    </div>
+                    <button
+                      class="px-3 py-1.5 bg-primary text-white text-sm rounded-lg btn-hover shadow-sm"
+                    >
+                      立即预约
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  class="department-item p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                    >
+                      <i class="fa fa-user-md"></i>
+                    </div>
+                    <div class="flex-grow">
+                      <h3 class="font-medium">全科医学科</h3>
+                      <p class="text-xs text-gray-500 mt-1">适合综合症状初诊</p>
+                    </div>
+                    <button
+                      class="px-3 py-1.5 bg-primary text-white text-sm rounded-lg btn-hover shadow-sm"
+                    >
+                      立即预约
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 温馨提示 -->
+            <div class="bg-primary/5 rounded-xl p-4 border border-primary/20">
+              <div class="flex items-start">
+                <i class="fa fa-info-circle text-primary mt-0.5 mr-2"></i>
+                <p class="text-sm text-gray-600">
+                  智能导诊仅供参考，不能替代专业医生的诊断。如症状严重，请立即就医或拨打急救电话。
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 预约挂号页面 -->
+      <div id="appointment-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">预约挂号</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow p-4 overflow-y-auto bg-gray-50">
+          <!-- 科室选择 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">选择科室</h2>
+
+            <div class="grid grid-cols-4 gap-2">
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all active"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mb-1"
+                >
+                  <i class="fa fa-heartbeat"></i>
+                </div>
+                <span class="text-xs">内科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-medkit"></i>
+                </div>
+                <span class="text-xs">外科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-child"></i>
+                </div>
+                <span class="text-xs">儿科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-female"></i>
+                </div>
+                <span class="text-xs">妇产科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-eye"></i>
+                </div>
+                <span class="text-xs">眼科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-deaf"></i>
+                </div>
+                <span class="text-xs">耳鼻喉</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-smile-o"></i>
+                </div>
+                <span class="text-xs">口腔科</span>
+              </button>
+
+              <button
+                class="department-btn flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-plus-square"></i>
+                </div>
+                <span class="text-xs">更多</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 内科亚专科 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">内科</h2>
+
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                class="sub-department-btn px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium hover:bg-primary/20 transition-all active"
+              >
+                普通内科
+              </button>
+
+              <button
+                class="sub-department-btn px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all"
+              >
+                心血管内科
+              </button>
+
+              <button
+                class="sub-department-btn px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all"
+              >
+                呼吸内科
+              </button>
+
+              <button
+                class="sub-department-btn px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all"
+              >
+                消化内科
+              </button>
+
+              <button
+                class="sub-department-btn px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all"
+              >
+                神经内科
+              </button>
+
+              <button
+                class="sub-department-btn px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-all"
+              >
+                内分泌科
+              </button>
+            </div>
+          </div>
+
+          <!-- 日期选择 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">选择日期</h2>
+
+            <div class="overflow-x-auto pb-2">
+              <div class="flex space-x-3 min-w-max">
+                <button
+                  class="date-btn flex flex-col items-center p-3 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all active"
+                >
+                  <span class="text-sm">今天</span>
+                  <span class="text-lg font-medium my-1">6/12</span>
+                  <span class="text-xs">周一</span>
+                </button>
+
+                <button
+                  class="date-btn flex flex-col items-center p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                >
+                  <span class="text-sm">明天</span>
+                  <span class="text-lg font-medium my-1">6/13</span>
+                  <span class="text-xs">周二</span>
+                </button>
+
+                <button
+                  class="date-btn flex flex-col items-center p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                >
+                  <span class="text-sm">后天</span>
+                  <span class="text-lg font-medium my-1">6/14</span>
+                  <span class="text-xs">周三</span>
+                </button>
+
+                <button
+                  class="date-btn flex flex-col items-center p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                >
+                  <span class="text-sm"></span>
+                  <span class="text-lg font-medium my-1">6/15</span>
+                  <span class="text-xs">周四</span>
+                </button>
+
+                <button
+                  class="date-btn flex flex-col items-center p-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                >
+                  <span class="text-sm"></span>
+                  <span class="text-lg font-medium my-1">6/16</span>
+                  <span class="text-xs">周五</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 医生列表 -->
+          <div>
+            <h2 class="text-base font-medium mb-3">可预约医生</h2>
+
+            <div class="space-y-3">
+              <div class="doctor-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <img
+                    src="https://picsum.photos/id/22/200/200"
+                    alt="医生头像"
+                    class="w-16 h-16 rounded-lg object-cover mr-3"
+                  />
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="font-medium">张医生</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">
+                          主任医师 | 教授
+                        </p>
+                      </div>
+                      <span
+                        class="text-xs px-2 py-0.5 bg-green-100 text-green-600 rounded-full"
+                        >可预约</span
+                      >
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      擅长：呼吸系统疾病、慢性咳嗽、哮喘等
+                    </p>
+
+                    <div class="flex items-center mt-2">
+                      <span class="text-warning mr-0.5">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-half-o"></i>
+                      </span>
+                      <span class="text-xs text-gray-500">4.9 (1250评价)</span>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                      <span class="text-primary font-medium">¥60</span>
+                      <button
+                        class="appointment-btn px-3 py-1.5 bg-primary text-white text-sm rounded-lg btn-hover shadow-sm"
+                      >
+                        立即预约
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="doctor-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <img
+                    src="https://picsum.photos/id/91/200/200"
+                    alt="医生头像"
+                    class="w-16 h-16 rounded-lg object-cover mr-3"
+                  />
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="font-medium">李医生</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">
+                          副主任医师 | 副教授
+                        </p>
+                      </div>
+                      <span
+                        class="text-xs px-2 py-0.5 bg-green-100 text-green-600 rounded-full"
+                        >可预约</span
+                      >
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      擅长：心血管疾病、高血压、冠心病等
+                    </p>
+
+                    <div class="flex items-center mt-2">
+                      <span class="text-warning mr-0.5">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                      </span>
+                      <span class="text-xs text-gray-500">4.2 (860评价)</span>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                      <span class="text-primary font-medium">¥50</span>
+                      <button
+                        class="appointment-btn px-3 py-1.5 bg-primary text-white text-sm rounded-lg btn-hover shadow-sm"
+                      >
+                        立即预约
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="doctor-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <img
+                    src="https://picsum.photos/id/64/200/200"
+                    alt="医生头像"
+                    class="w-16 h-16 rounded-lg object-cover mr-3"
+                  />
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h3 class="font-medium">王医生</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">主治医师</p>
+                      </div>
+                      <span
+                        class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full"
+                        >已满</span
+                      >
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      擅长：消化系统疾病、胃肠疾病等
+                    </p>
+
+                    <div class="flex items-center mt-2">
+                      <span class="text-warning mr-0.5">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                      </span>
+                      <span class="text-xs text-gray-500">4.0 (620评价)</span>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                      <span class="text-primary font-medium">¥40</span>
+                      <button
+                        class="px-3 py-1.5 bg-gray-100 text-gray-500 text-sm rounded-lg cursor-not-allowed"
+                      >
+                        已约满
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-primary"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 门诊缴费页面 -->
+      <div id="payment-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">门诊缴费</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow p-4 overflow-y-auto bg-gray-50">
+          <!-- 就诊信息 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">就诊信息</h2>
+
+            <div class="flex items-start">
+              <div
+                class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+              >
+                <i class="fa fa-user-md text-xl"></i>
+              </div>
+
+              <div>
+                <h3 class="font-medium">内科 - 张医生</h3>
+                <p class="text-sm text-gray-500 mt-1">
+                  就诊日期: 2023年6月12日 上午
+                </p>
+                <p class="text-sm text-gray-500">就诊卡号: NO.202306120015</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 待缴费项目 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">待缴费项目</h2>
+
+            <div class="space-y-3">
+              <div class="payment-item p-3 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                  <h3 class="font-medium">普通门诊诊查费</h3>
+                  <span class="text-gray-700">¥60</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">2023-06-12 09:30</p>
+              </div>
+
+              <div class="payment-item p-3 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                  <h3 class="font-medium">血常规检查</h3>
+                  <span class="text-gray-700">¥35</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">2023-06-12 09:30</p>
+              </div>
+
+              <div class="payment-item p-3 border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                  <h3 class="font-medium">药品费用</h3>
+                  <span class="text-gray-700">¥125</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">2023-06-12 09:30</p>
+              </div>
+
+              <div class="payment-item p-3">
+                <div class="flex justify-between items-center">
+                  <h3 class="font-medium">总计</h3>
+                  <span class="text-primary font-bold text-lg">¥220</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 支付方式 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-8">
+            <h2 class="text-base font-medium mb-3">选择支付方式</h2>
+
+            <div class="space-y-3">
+              <label
+                class="payment-method flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="wechat"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                  checked
+                />
+                <div class="flex items-center ml-3 flex-grow">
+                  <i class="fa fa-weixin text-green-500 text-xl mr-3"></i>
+                  <span class="font-medium">微信支付</span>
+                </div>
+                <i class="fa fa-check-circle text-primary"></i>
+              </label>
+
+              <label
+                class="payment-method flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="alipay"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                />
+                <div class="flex items-center ml-3 flex-grow">
+                  <i class="fa fa-credit-card text-blue-500 text-xl mr-3"></i>
+                  <span class="font-medium">支付宝</span>
+                </div>
+              </label>
+
+              <label
+                class="payment-method flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="insurance"
+                  class="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                />
+                <div class="flex items-center ml-3 flex-grow">
+                  <i class="fa fa-shield text-blue-500 text-xl mr-3"></i>
+                  <span class="font-medium">医保支付</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 确认支付按钮 -->
+          <button
+            id="confirm-payment"
+            class="w-full bg-primary text-white py-3 rounded-lg font-medium btn-hover shadow-md sticky bottom-20"
+          >
+            确认支付 ¥220
+          </button>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 药品知识库页面 -->
+      <div id="medicine-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">药品知识库</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow p-4 overflow-y-auto bg-gray-50">
+          <!-- 搜索栏 -->
+          <div class="relative mb-4">
+            <input
+              type="text"
+              placeholder="搜索药品名称、类别..."
+              class="w-full py-3 px-4 pr-10 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+            />
+            <button
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            >
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+
+          <!-- 药品分类 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">药品分类</h2>
+
+            <div class="grid grid-cols-4 gap-2">
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-1"
+                >
+                  <i class="fa fa-medkit"></i>
+                </div>
+                <span class="text-xs">解热镇痛</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-heartbeat"></i>
+                </div>
+                <span class="text-xs">心血管</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-ambulance"></i>
+                </div>
+                <span class="text-xs">呼吸系统</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-cutlery"></i>
+                </div>
+                <span class="text-xs">消化系统</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-brain"></i>
+                </div>
+                <span class="text-xs">神经系统</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-flask"></i>
+                </div>
+                <span class="text-xs">抗生素</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-pills"></i>
+                </div>
+                <span class="text-xs">维生素</span>
+              </button>
+
+              <button
+                class="medicine-category flex flex-col items-center p-2 rounded-lg hover:bg-primary/10 transition-all"
+              >
+                <div
+                  class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mb-1"
+                >
+                  <i class="fa fa-plus-square"></i>
+                </div>
+                <span class="text-xs">更多</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 药品列表 -->
+          <div>
+            <h2 class="text-base font-medium mb-3">解热镇痛类</h2>
+
+            <div class="space-y-3">
+              <div class="medicine-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <div
+                    class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+                  >
+                    <i class="fa fa-pills text-xl"></i>
+                  </div>
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <h3 class="font-medium">阿司匹林肠溶片</h3>
+                      <button
+                        class="text-gray-400 hover:text-warning transition-colors"
+                      >
+                        <i class="fa fa-star-o"></i>
+                      </button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      用于缓解轻至中度疼痛，如头痛、牙痛等
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span
+                        class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                        >口服</span
+                      >
+                      <span
+                        class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full"
+                        >片剂</span
+                      >
+                    </div>
+
+                    <button
+                      class="w-full mt-3 py-1.5 bg-primary/10 text-primary text-sm rounded-lg hover:bg-primary/20 transition-colors"
+                    >
+                      查看详情
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="medicine-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <div
+                    class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+                  >
+                    <i class="fa fa-pills text-xl"></i>
+                  </div>
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <h3 class="font-medium">布洛芬缓释胶囊</h3>
+                      <button class="text-warning transition-colors">
+                        <i class="fa fa-star"></i>
+                      </button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      用于缓解轻至中度疼痛，如头痛、关节痛等
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span
+                        class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                        >口服</span
+                      >
+                      <span
+                        class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full"
+                        >胶囊</span
+                      >
+                    </div>
+
+                    <button
+                      class="w-full mt-3 py-1.5 bg-primary/10 text-primary text-sm rounded-lg hover:bg-primary/20 transition-colors"
+                    >
+                      查看详情
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="medicine-item bg-white rounded-xl p-4 card-shadow">
+                <div class="flex items-start">
+                  <div
+                    class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3 flex-shrink-0"
+                  >
+                    <i class="fa fa-pills text-xl"></i>
+                  </div>
+
+                  <div class="flex-grow">
+                    <div class="flex justify-between items-start">
+                      <h3 class="font-medium">对乙酰氨基酚片</h3>
+                      <button
+                        class="text-gray-400 hover:text-warning transition-colors"
+                      >
+                        <i class="fa fa-star-o"></i>
+                      </button>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                      用于普通感冒或流感引起的发热，也用于缓解轻至中度疼痛
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-2">
+                      <span
+                        class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                        >口服</span
+                      >
+                      <span
+                        class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full"
+                        >片剂</span
+                      >
+                    </div>
+
+                    <button
+                      class="w-full mt-3 py-1.5 bg-primary/10 text-primary text-sm rounded-lg hover:bg-primary/20 transition-colors"
+                    >
+                      查看详情
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 候诊队列页面 -->
+      <div id="queue-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">候诊队列</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow p-4 overflow-y-auto bg-gray-50">
+          <!-- 当前候诊 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-base font-medium">我的候诊</h2>
+              <span class="text-xs text-gray-500">实时更新</span>
+            </div>
+
+            <div class="p-4 border border-primary/20 rounded-lg bg-primary/5">
+              <div class="flex items-start">
+                <div
+                  class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0"
+                >
+                  <i class="fa fa-stethoscope text-xl"></i>
+                </div>
+
+                <div class="flex-grow">
+                  <div class="flex justify-between items-start">
+                    <h3 class="font-medium">内科 - 张医生</h3>
+                    <span
+                      class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full"
+                      >候诊中</span
+                    >
+                  </div>
+
+                  <p class="text-sm text-gray-500 mt-1">
+                    2023年6月12日 上午 09:30-10:00
+                  </p>
+                  <p class="text-sm text-gray-500">挂号号码: A1234</p>
+
+                  <div class="mt-3 flex items-center">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        class="bg-primary h-2.5 rounded-full"
+                        style="width: 75%"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-sm"
+                      >前面还有
+                      <span class="text-primary font-medium">3</span> 人</span
+                    >
+                    <span class="text-sm text-gray-500"
+                      >预计等待
+                      <span class="text-primary font-medium">15</span>
+                      分钟</span
+                    >
+                  </div>
+
+                  <div class="flex space-x-2 mt-3">
+                    <button
+                      class="flex-1 py-1.5 bg-primary text-white text-sm rounded-lg btn-hover shadow-sm"
+                    >
+                      查看详情
+                    </button>
+                    <button
+                      class="flex-1 py-1.5 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      取消排队
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 科室队列 -->
+          <div class="bg-white rounded-xl p-4 card-shadow mb-4">
+            <h2 class="text-base font-medium mb-3">科室队列状态</h2>
+
+            <div class="space-y-3">
+              <div
+                class="department-queue p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-2"
+                    >
+                      <i class="fa fa-heartbeat"></i>
+                    </div>
+                    <h3 class="font-medium">内科</h3>
+                  </div>
+                  <span
+                    class="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-600 rounded-full"
+                    >拥挤</span
+                  >
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <span class="text-sm text-gray-500">当前叫号: A1231</span>
+                  <span class="text-sm text-gray-500">等待人数: 25</span>
+                </div>
+
+                <div class="mt-2 flex items-center">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-yellow-500 h-2 rounded-full"
+                      style="width: 85%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="department-queue p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-2"
+                    >
+                      <i class="fa fa-medkit"></i>
+                    </div>
+                    <h3 class="font-medium">外科</h3>
+                  </div>
+                  <span
+                    class="text-xs px-2 py-0.5 bg-green-100 text-green-600 rounded-full"
+                    >通畅</span
+                  >
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <span class="text-sm text-gray-500">当前叫号: B042</span>
+                  <span class="text-sm text-gray-500">等待人数: 8</span>
+                </div>
+
+                <div class="mt-2 flex items-center">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-green-500 h-2 rounded-full"
+                      style="width: 30%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="department-queue p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-2"
+                    >
+                      <i class="fa fa-child"></i>
+                    </div>
+                    <h3 class="font-medium">儿科</h3>
+                  </div>
+                  <span
+                    class="text-xs px-2 py-0.5 bg-red-100 text-red-600 rounded-full"
+                    >繁忙</span
+                  >
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <span class="text-sm text-gray-500">当前叫号: C089</span>
+                  <span class="text-sm text-gray-500">等待人数: 32</span>
+                </div>
+
+                <div class="mt-2 flex items-center">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-red-500 h-2 rounded-full"
+                      style="width: 95%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="department-queue p-3 border border-gray-100 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all"
+              >
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-2"
+                    >
+                      <i class="fa fa-female"></i>
+                    </div>
+                    <h3 class="font-medium">妇产科</h3>
+                  </div>
+                  <span
+                    class="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-600 rounded-full"
+                    >拥挤</span
+                  >
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <span class="text-sm text-gray-500">当前叫号: D056</span>
+                  <span class="text-sm text-gray-500">等待人数: 18</span>
+                </div>
+
+                <div class="mt-2 flex items-center">
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      class="bg-yellow-500 h-2 rounded-full"
+                      style="width: 70%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 温馨提示 -->
+          <div class="bg-primary/5 rounded-xl p-4 border border-primary/20">
+            <div class="flex items-start">
+              <i class="fa fa-info-circle text-primary mt-0.5 mr-2"></i>
+              <p class="text-sm text-gray-600">
+                请提前30分钟到达医院候诊，过号需重新排队。如有疑问，请咨询门诊服务台。
+              </p>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-primary"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 个人中心页面 -->
+      <div id="user-page" class="page hidden min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header
+          class="bg-white border-b border-gray-100 p-4 sticky top-0 z-10 flex items-center"
+        >
+          <button class="back-btn mr-3 text-gray-600">
+            <i class="fa fa-arrow-left text-lg"></i>
+          </button>
+          <h1 class="text-lg font-medium flex-grow">个人中心</h1>
+          <div class="w-8"></div>
+          <!-- 占位，保持标题居中 -->
+        </header>
+
+        <!-- 内容区域 -->
+        <main class="flex-grow overflow-y-auto bg-gray-50">
+          <!-- 用户信息 -->
+          <div class="bg-primary p-6 text-white">
+            <div class="flex items-center">
+              <div
+                class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden mr-4"
+              >
+                <i class="fa fa-user text-2xl"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-medium">用户姓名</h2>
+                <p class="text-sm opacity-80 mt-1">账号: 138****6789</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 功能菜单 -->
+          <div class="p-4">
+            <div class="bg-white rounded-xl card-shadow mb-4">
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-calendar-check-o"></i>
+                </div>
+                <span class="font-medium">我的预约</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-credit-card"></i>
+                </div>
+                <span class="font-medium">缴费记录</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-file-text-o"></i>
+                </div>
+                <span class="font-medium">检查报告</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl card-shadow">
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-user-o"></i>
+                </div>
+                <span class="font-medium">个人信息</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-bell-o"></i>
+                </div>
+                <span class="font-medium">消息通知</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+
+              <div class="flex items-center p-4 border-b border-gray-100">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3"
+                >
+                  <i class="fa fa-cog"></i>
+                </div>
+                <span class="font-medium">设置</span>
+                <i class="fa fa-chevron-right text-gray-400 ml-auto"></i>
+              </div>
+
+              <div class="flex items-center p-4">
+                <div
+                  class="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center text-danger mr-3"
+                >
+                  <i class="fa fa-sign-out"></i>
+                </div>
+                <span class="font-medium text-danger">退出登录</span>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- 底部导航 -->
+        <nav
+          class="bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto z-10"
+        >
+          <div class="flex justify-around">
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="home-page"
+            >
+              <i class="fa fa-home text-xl"></i>
+              <span class="text-xs mt-1">首页</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="appointment-page"
+            >
+              <i class="fa fa-calendar text-xl"></i>
+              <span class="text-xs mt-1">预约</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-gray-500"
+              data-target="queue-page"
+            >
+              <i class="fa fa-clock-o text-xl"></i>
+              <span class="text-xs mt-1">候诊</span>
+            </button>
+            <button
+              class="nav-item flex flex-col items-center py-2 px-4 text-primary"
+              data-target="user-page"
+            >
+              <i class="fa fa-user text-xl"></i>
+              <span class="text-xs mt-1">我的</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- 预约成功弹窗 -->
+      <div
+        id="appointment-modal"
+        class="modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      >
+        <div class="bg-white rounded-xl p-6 max-w-xs w-full mx-4 text-center">
+          <div
+            class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-500 mx-auto mb-4"
+          >
+            <i class="fa fa-check-circle text-3xl"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">预约成功</h2>
+          <p class="text-gray-600 mb-2">您已成功预约张医生的门诊</p>
+          <p class="text-gray-600 mb-6">时间：2023年6月12日 上午 09:30-10:00</p>
+          <button
+            id="close-appointment-modal"
+            class="w-full bg-primary text-white py-3 rounded-lg font-medium btn-hover shadow-md"
+          >
+            确定
+          </button>
+        </div>
+      </div>
+
+      <!-- 支付成功弹窗 -->
+      <div
+        id="payment-modal"
+        class="modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      >
+        <div class="bg-white rounded-xl p-6 max-w-xs w-full mx-4 text-center">
+          <div
+            class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-500 mx-auto mb-4"
+          >
+            <i class="fa fa-check-circle text-3xl"></i>
+          </div>
+          <h2 class="text-xl font-bold mb-2">支付成功</h2>
+          <p class="text-gray-600 mb-6">您的订单已支付成功，感谢您的使用</p>
+          <button
+            id="close-payment-modal"
+            class="w-full bg-primary text-white py-3 rounded-lg font-medium btn-hover shadow-md"
+          >
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 页面切换功能
+        const pages = document.querySelectorAll(".page");
+        const navItems = document.querySelectorAll(".nav-item");
+        const backBtns = document.querySelectorAll(".back-btn");
+        const functionCards = document.querySelectorAll(".function-card");
+
+        // 显示指定页面
+        function showPage(pageId) {
+          pages.forEach((page) => {
+            page.classList.add("hidden");
+            page.classList.remove("active");
+          });
+
+          const targetPage = document.getElementById(pageId);
+          if (targetPage) {
+            targetPage.classList.remove("hidden");
+            targetPage.classList.add("active");
+          }
+
+          // 更新底部导航状态
+          navItems.forEach((item) => {
+            if (item.dataset.target === pageId) {
+              item.classList.add("text-primary");
+              item.classList.remove("text-gray-500");
+            } else {
+              item.classList.remove("text-primary");
+              item.classList.add("text-gray-500");
+            }
+          });
+        }
+
+        // 底部导航点击事件
+        navItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const targetPage = this.dataset.target;
+            showPage(targetPage);
+          });
+        });
+
+        // 返回按钮点击事件
+        backBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            showPage("home-page");
+          });
+        });
+
+        // 功能卡片点击事件
+        functionCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            const targetPage = this.dataset.target;
+            if (targetPage) {
+              showPage(targetPage);
+            }
+          });
+        });
+
+        // 登录表单处理
+        const loginForm = document.getElementById("login-form");
+        if (loginForm) {
+          loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            // 模拟登录成功，跳转到首页
+            showPage("home-page");
+          });
+        }
+
+        // 注册表单处理
+        const registerForm = document.getElementById("register-form");
+        if (registerForm) {
+          registerForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            // 模拟注册成功，跳转到登录页
+            showPage("login-page");
+          });
+        }
+
+        // 切换到注册页面
+        const toRegister = document.getElementById("to-register");
+        if (toRegister) {
+          toRegister.addEventListener("click", function (e) {
+            e.preventDefault();
+            showPage("register-page");
+          });
+        }
+
+        // 切换到登录页面
+        const toLogin = document.getElementById("to-login");
+        if (toLogin) {
+          toLogin.addEventListener("click", function (e) {
+            e.preventDefault();
+            showPage("login-page");
+          });
+        }
+
+        // 密码显示/隐藏切换
+        const togglePasswordBtns =
+          document.querySelectorAll(".toggle-password");
+        togglePasswordBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const input = this.parentElement.querySelector("input");
+            const type =
+              input.getAttribute("type") === "password" ? "text" : "password";
+            input.setAttribute("type", type);
+            this.innerHTML =
+              type === "password"
+                ? '<i class="fa fa-eye-slash"></i>'
+                : '<i class="fa fa-eye"></i>';
+          });
+        });
+
+        // 发送验证码
+        const sendCodeBtn = document.getElementById("send-code");
+        if (sendCodeBtn) {
+          sendCodeBtn.addEventListener("click", function () {
+            // 模拟发送验证码倒计时
+            let countdown = 60;
+            this.disabled = true;
+            this.textContent = `重新发送(${countdown}s)`;
+
+            const timer = setInterval(() => {
+              countdown--;
+              this.textContent = `重新发送(${countdown}s)`;
+
+              if (countdown <= 0) {
+                clearInterval(timer);
+                this.disabled = false;
+                this.textContent = "发送验证码";
+              }
+            }, 1000);
+          });
+        }
+
+        // 智能导诊
+        const startDiagnosisBtn = document.getElementById("start-diagnosis");
+        const diagnosisResult = document.getElementById("diagnosis-result");
+        if (startDiagnosisBtn && diagnosisResult) {
+          startDiagnosisBtn.addEventListener("click", function () {
+            // 模拟导诊过程
+            this.innerHTML =
+              '<i class="fa fa-spinner fa-spin mr-2"></i>分析中...';
+            this.disabled = true;
+
+            setTimeout(() => {
+              diagnosisResult.classList.remove("hidden");
+              this.innerHTML = "开始智能导诊";
+              this.disabled = false;
+              // 滚动到结果区域
+              diagnosisResult.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 1500);
+          });
+        }
+
+        // 症状标签点击
+        const symptomTags = document.querySelectorAll(".symptom-tag");
+        symptomTags.forEach((tag) => {
+          tag.addEventListener("click", function () {
+            this.classList.toggle("bg-primary/10");
+            this.classList.toggle("text-primary");
+            this.classList.toggle("bg-gray-100");
+            this.classList.toggle("text-gray-700");
+          });
+        });
+
+        // 科室按钮点击
+        const departmentBtns = document.querySelectorAll(".department-btn");
+        departmentBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            departmentBtns.forEach((b) => {
+              b.classList.remove("active");
+              const icon = b.querySelector("div");
+              icon.classList.remove("bg-primary");
+              icon.classList.add("bg-gray-100");
+              icon.classList.remove("text-white");
+              icon.classList.add("text-gray-600");
+            });
+
+            this.classList.add("active");
+            const icon = this.querySelector("div");
+            icon.classList.remove("bg-gray-100");
+            icon.classList.add("bg-primary");
+            icon.classList.remove("text-gray-600");
+            icon.classList.add("text-white");
+          });
+        });
+
+        // 亚专科按钮点击
+        const subDepartmentBtns = document.querySelectorAll(
+          ".sub-department-btn"
+        );
+        subDepartmentBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            subDepartmentBtns.forEach((b) => {
+              b.classList.remove("active");
+              b.classList.remove("bg-primary/10");
+              b.classList.remove("text-primary");
+              b.classList.add("bg-gray-100");
+              b.classList.add("text-gray-700");
+            });
+
+            this.classList.add("active");
+            this.classList.remove("bg-gray-100");
+            this.classList.add("bg-primary/10");
+            this.classList.remove("text-gray-700");
+            this.classList.add("text-primary");
+          });
+        });
+
+        // 日期按钮点击
+        const dateBtns = document.querySelectorAll(".date-btn");
+        dateBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            dateBtns.forEach((b) => {
+              b.classList.remove("active");
+              b.classList.remove("bg-primary/10");
+              b.classList.remove("text-primary");
+              b.classList.add("bg-gray-100");
+              b.classList.add("text-gray-700");
+            });
+
+            this.classList.add("active");
+            this.classList.remove("bg-gray-100");
+            this.classList.add("bg-primary/10");
+            this.classList.remove("text-gray-700");
+            this.classList.add("text-primary");
+          });
+        });
+
+        // 药品分类按钮点击
+        const medicineCategoryBtns =
+          document.querySelectorAll(".medicine-category");
+        medicineCategoryBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            medicineCategoryBtns.forEach((b) => {
+              const icon = b.querySelector("div");
+              icon.classList.remove("bg-primary/10");
+              icon.classList.add("bg-gray-100");
+              icon.classList.remove("text-primary");
+              icon.classList.add("text-gray-600");
+            });
+
+            const icon = this.querySelector("div");
+            icon.classList.remove("bg-gray-100");
+            icon.classList.add("bg-primary/10");
+            icon.classList.remove("text-gray-600");
+            icon.classList.add("text-primary");
+          });
+        });
+
+        // 支付方式选择
+        const paymentMethods = document.querySelectorAll(".payment-method");
+        paymentMethods.forEach((method) => {
+          method.addEventListener("click", function () {
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            // 更新选中状态图标
+            paymentMethods.forEach((m) => {
+              const checkIcon = m.querySelector(".fa-check-circle");
+              if (checkIcon) {
+                checkIcon.remove();
+              }
+            });
+
+            const icon = document.createElement("i");
+            icon.classList.add("fa", "fa-check-circle", "text-primary");
+            this.appendChild(icon);
+          });
+        });
+
+        // 预约按钮点击
+        const appointmentBtns = document.querySelectorAll(".appointment-btn");
+        const appointmentModal = document.getElementById("appointment-modal");
+        appointmentBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            appointmentModal.classList.remove("hidden");
+          });
+        });
+
+        // 关闭预约成功弹窗
+        const closeAppointmentModal = document.getElementById(
+          "close-appointment-modal"
+        );
+        if (closeAppointmentModal) {
+          closeAppointmentModal.addEventListener("click", function () {
+            appointmentModal.classList.add("hidden");
+            showPage("home-page");
+          });
+        }
+
+        // 确认支付按钮点击
+        const confirmPaymentBtn = document.getElementById("confirm-payment");
+        const paymentModal = document.getElementById("payment-modal");
+        if (confirmPaymentBtn && paymentModal) {
+          confirmPaymentBtn.addEventListener("click", function () {
+            paymentModal.classList.remove("hidden");
+          });
+        }
+
+        // 关闭支付成功弹窗
+        const closePaymentModal = document.getElementById(
+          "close-payment-modal"
+        );
+        if (closePaymentModal) {
+          closePaymentModal.addEventListener("click", function () {
+            paymentModal.classList.add("hidden");
+            showPage("home-page");
+          });
+        }
+
+        // 点击弹窗外部关闭弹窗
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach((modal) => {
+          modal.addEventListener("click", function (e) {
+            if (e.target === this) {
+              this.classList.add("hidden");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
