@@ -4104,55 +4104,7 @@
 			origin_x   	0
 			origin_y   	1613
 			items      	(list diagram_item_list
-			    (object ClassView "Class" "Use Case View::医院就诊系统::医院护士" @152
-				ShowCompartmentStereotypes 	TRUE
-				IncludeAttribute 	TRUE
-				IncludeOperation 	TRUE
-				location   	(1147, 2881)
-				font       	(object Font
-				    size       	10
-				    face       	"Arial"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
-				label      	(object ItemLabel
-				    Parent_View 	@152
-				    location   	(1011, 2700)
-				    fill_color 	13434879
-				    nlines     	1
-				    max_width  	272
-				    justify    	0
-				    label      	"医院护士")
-				icon_style 	"Icon"
-				line_color 	3342489
-				fill_color 	13434879
-				quidu      	"691C7E1B0083"
-				compartment 	(object Compartment
-				    Parent_View 	@152
-				    location   	(1011, 2761)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	6
-				    max_width  	309
-				    justify    	1)
-				width      	290
-				height     	386
-				annotation 	8
-				autoResize 	TRUE)
-			    (object ClassView "Class" "Use Case View::医院就诊系统::药品知识库" @153
+			    (object ClassView "Class" "Use Case View::医院就诊系统::药品知识库" @152
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
@@ -4167,7 +4119,7 @@
 				    color      	0
 				    default_color 	TRUE)
 				label      	(object ItemLabel
-				    Parent_View 	@153
+				    Parent_View 	@152
 				    location   	(1580, 2686)
 				    fill_color 	13434879
 				    nlines     	1
@@ -4178,25 +4130,37 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7E7D0033"
-				compartment 	(object Compartment
-				    Parent_View 	@153
-				    location   	(1580, 2747)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	6
-				    max_width  	384
-				    justify    	1)
 				width      	358
+				height     	386
+				annotation 	8
+				autoResize 	TRUE)
+			    (object ClassView "Class" "Use Case View::医院就诊系统::医院护士" @153
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1147, 2881)
+				font       	(object Font
+				    size       	10
+				    face       	"Arial"
+				    bold       	FALSE
+				    italics    	FALSE
+				    underline  	FALSE
+				    strike     	FALSE
+				    color      	0
+				    default_color 	TRUE)
+				label      	(object ItemLabel
+				    Parent_View 	@153
+				    location   	(1011, 2700)
+				    fill_color 	13434879
+				    nlines     	1
+				    max_width  	272
+				    justify    	0
+				    label      	"医院护士")
+				icon_style 	"Icon"
+				line_color 	3342489
+				fill_color 	13434879
+				quidu      	"691C7E1B0083"
+				width      	290
 				height     	386
 				annotation 	8
 				autoResize 	TRUE)
@@ -4226,24 +4190,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7FB70067"
-				compartment 	(object Compartment
-				    Parent_View 	@154
-				    location   	(2771, 1195)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	8
-				    max_width  	284
-				    justify    	1)
 				width      	270
 				height     	486
 				annotation 	8
@@ -4342,7 +4288,7 @@
 					line_color 	3342489
 					quidu      	"691C85E1031D"
 					client     	@155
-					supplier   	@153
+					supplier   	@152
 					vertices   	(list Points
 					    (2329, 2106)
 					    (1896, 2673))
@@ -4394,24 +4340,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7EB603B8"
-				compartment 	(object Compartment
-				    Parent_View 	@161
-				    location   	(2176, 2729)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	6
-				    max_width  	384
-				    justify    	1)
 				width      	358
 				height     	386
 				annotation 	8
@@ -4442,24 +4370,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C80310368"
-				compartment 	(object Compartment
-				    Parent_View 	@162
-				    location   	(2535, 3306)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	6
-				    max_width  	434
-				    justify    	1)
 				width      	402
 				height     	386
 				annotation 	8
@@ -4558,7 +4468,7 @@
 					line_color 	3342489
 					quidu      	"691C86E502F7"
 					client     	@163
-					supplier   	@153
+					supplier   	@152
 					vertices   	(list Points
 					    (2227, 3139)
 					    (1929, 2970))
@@ -4704,55 +4614,7 @@
 					    pctDist    	0.900000
 					    height     	54
 					    orientation 	0))))
-			    (object ClassView "Class" "Use Case View::医院就诊系统::科室" @175
-				ShowCompartmentStereotypes 	TRUE
-				IncludeAttribute 	TRUE
-				IncludeOperation 	TRUE
-				location   	(1640, 543)
-				font       	(object Font
-				    size       	10
-				    face       	"Arial"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
-				label      	(object ItemLabel
-				    Parent_View 	@175
-				    location   	(1513, 362)
-				    fill_color 	13434879
-				    nlines     	1
-				    max_width  	254
-				    justify    	0
-				    label      	"科室")
-				icon_style 	"Icon"
-				line_color 	3342489
-				fill_color 	13434879
-				quidu      	"691C7CD40021"
-				compartment 	(object Compartment
-				    Parent_View 	@175
-				    location   	(1513, 423)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	6
-				    max_width  	250
-				    justify    	1)
-				width      	272
-				height     	386
-				annotation 	8
-				autoResize 	TRUE)
-			    (object ClassView "Class" "Use Case View::医院就诊系统::就诊人" @176
+			    (object ClassView "Class" "Use Case View::医院就诊系统::就诊人" @175
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
@@ -4767,7 +4629,7 @@
 				    color      	0
 				    default_color 	TRUE)
 				label      	(object ItemLabel
-				    Parent_View 	@176
+				    Parent_View 	@175
 				    location   	(943, 813)
 				    fill_color 	13434879
 				    nlines     	1
@@ -4778,29 +4640,11 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C76FD010B"
-				compartment 	(object Compartment
-				    Parent_View 	@176
-				    location   	(943, 874)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	16777215
-				    anchor     	2
-				    nlines     	11
-				    max_width  	284
-				    justify    	1)
 				width      	270
 				height     	636
 				annotation 	8
 				autoResize 	TRUE)
-			    (object ClassView "Class" "Use Case View::医院就诊系统::智能分诊" @177
+			    (object ClassView "Class" "Use Case View::医院就诊系统::智能分诊" @176
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
@@ -4815,7 +4659,7 @@
 				    color      	0
 				    default_color 	TRUE)
 				label      	(object ItemLabel
-				    Parent_View 	@177
+				    Parent_View 	@176
 				    location   	(991, 2045)
 				    fill_color 	13434879
 				    nlines     	1
@@ -4826,119 +4670,11 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7DA0021F"
-				compartment 	(object Compartment
-				    Parent_View 	@177
-				    location   	(991, 2106)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	8
-				    max_width  	359
-				    justify    	1)
 				width      	334
 				height     	486
 				annotation 	8
 				autoResize 	TRUE)
-			    (object AssociationViewNew "被推荐" @178
-				location   	(1399, 1384)
-				font       	(object Font
-				    size       	10
-				    face       	"Arial"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
-				label      	(object SegLabel @179
-				    Parent_View 	@178
-				    location   	(1399, 1325)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	TRUE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    anchor     	1
-				    anchor_loc 	1
-				    nlines     	1
-				    max_width  	450
-				    justify    	0
-				    label      	"被推荐"
-				    pctDist    	0.500000
-				    height     	60
-				    orientation 	0)
-				stereotype 	TRUE
-				line_color 	3342489
-				quidu      	"691C847E027A"
-				roleview_list 	(list RoleViews
-				    (object RoleView "$UNNAMED$135" @180
-					Parent_View 	@178
-					location   	(1030, -821)
-					font       	(object Font
-					    size       	10
-					    face       	"Arial"
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	TRUE
-					line_color 	3342489
-					quidu      	"691C847F01A6"
-					client     	@178
-					supplier   	@175
-					vertices   	(list Points
-					    (1399, 1384)
-					    (1583, 736))
-					line_style 	0
-					label      	(object SegLabel @181
-					    Parent_View 	@180
-					    location   	(1617, 816)
-					    font       	(object Font
-						size       	10
-						face       	"Arial"
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	2
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	15
-					    justify    	0
-					    label      	"1"
-					    pctDist    	0.900000
-					    height     	54
-					    orientation 	1))
-				    (object RoleView "$UNNAMED$136" @182
-					Parent_View 	@178
-					location   	(1030, -821)
-					stereotype 	TRUE
-					line_color 	3342489
-					quidu      	"691C847F01AE"
-					client     	@178
-					supplier   	@177
-					vertices   	(list Points
-					    (1399, 1384)
-					    (1216, 2032))
-					line_style 	0)))
-			    (object AssociationViewNew "分诊" @183
+			    (object AssociationViewNew "分诊" @177
 				location   	(1110, 1734)
 				font       	(object Font
 				    size       	10
@@ -4949,8 +4685,8 @@
 				    strike     	FALSE
 				    color      	0
 				    default_color 	TRUE)
-				label      	(object SegLabel @184
-				    Parent_View 	@183
+				label      	(object SegLabel @178
+				    Parent_View 	@177
 				    location   	(1110, 1675)
 				    font       	(object Font
 					size       	10
@@ -4974,20 +4710,20 @@
 				line_color 	3342489
 				quidu      	"691C854502C9"
 				roleview_list 	(list RoleViews
-				    (object RoleView "$UNNAMED$144" @185
-					Parent_View 	@183
+				    (object RoleView "$UNNAMED$144" @179
+					Parent_View 	@177
 					location   	(821, 686)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C8546014D"
-					client     	@183
-					supplier   	@177
+					client     	@177
+					supplier   	@176
 					vertices   	(list Points
 					    (1110, 1734)
 					    (1130, 2032))
 					line_style 	0)
-				    (object RoleView "$UNNAMED$145" @186
-					Parent_View 	@183
+				    (object RoleView "$UNNAMED$145" @180
+					Parent_View 	@177
 					location   	(821, 686)
 					font       	(object Font
 					    size       	10
@@ -5001,14 +4737,14 @@
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C85460158"
-					client     	@183
-					supplier   	@176
+					client     	@177
+					supplier   	@175
 					vertices   	(list Points
 					    (1110, 1734)
 					    (1089, 1437))
 					line_style 	0
-					label      	(object SegLabel @187
-					    Parent_View 	@186
+					label      	(object SegLabel @181
+					    Parent_View 	@180
 					    location   	(1146, 1464)
 					    font       	(object Font
 						size       	10
@@ -5028,67 +4764,67 @@
 					    pctDist    	0.900000
 					    height     	54
 					    orientation 	1))))
-			    (object AssociationViewNew "$UNNAMED$148" @188
+			    (object AssociationViewNew "$UNNAMED$148" @182
 				location   	(1147, 2603)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"691C85880328"
 				roleview_list 	(list RoleViews
-				    (object RoleView "$UNNAMED$149" @189
-					Parent_View 	@188
+				    (object RoleView "$UNNAMED$149" @183
+					Parent_View 	@182
 					location   	(778, 398)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C8589015E"
-					client     	@188
-					supplier   	@152
+					client     	@182
+					supplier   	@153
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2687))
 					line_style 	0)
-				    (object RoleView "$UNNAMED$150" @190
-					Parent_View 	@188
+				    (object RoleView "$UNNAMED$150" @184
+					Parent_View 	@182
 					location   	(778, 398)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C85890163"
-					client     	@188
-					supplier   	@177
+					client     	@182
+					supplier   	@176
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2519))
 					line_style 	0)))
-			    (object AssociationViewNew "$UNNAMED$151" @191
+			    (object AssociationViewNew "$UNNAMED$151" @185
 				location   	(1147, 2603)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"691C858F0173"
 				roleview_list 	(list RoleViews
-				    (object RoleView "$UNNAMED$152" @192
-					Parent_View 	@191
+				    (object RoleView "$UNNAMED$152" @186
+					Parent_View 	@185
 					location   	(778, 398)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C8590013E"
-					client     	@191
-					supplier   	@152
+					client     	@185
+					supplier   	@153
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2687))
 					line_style 	0)
-				    (object RoleView "$UNNAMED$153" @193
-					Parent_View 	@191
+				    (object RoleView "$UNNAMED$153" @187
+					Parent_View 	@185
 					location   	(778, 398)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C85900144"
-					client     	@191
-					supplier   	@177
+					client     	@185
+					supplier   	@176
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2519))
 					line_style 	0)))
-			    (object AssociationViewNew "分诊复核" @194
+			    (object AssociationViewNew "分诊复核" @188
 				location   	(1147, 2603)
 				font       	(object Font
 				    size       	10
@@ -5099,8 +4835,8 @@
 				    strike     	FALSE
 				    color      	0
 				    default_color 	TRUE)
-				label      	(object SegLabel @195
-				    Parent_View 	@194
+				label      	(object SegLabel @189
+				    Parent_View 	@188
 				    location   	(1147, 2544)
 				    font       	(object Font
 					size       	10
@@ -5124,8 +4860,8 @@
 				line_color 	3342489
 				quidu      	"691C85950105"
 				roleview_list 	(list RoleViews
-				    (object RoleView "$UNNAMED$154" @196
-					Parent_View 	@194
+				    (object RoleView "$UNNAMED$154" @190
+					Parent_View 	@188
 					location   	(778, 398)
 					font       	(object Font
 					    size       	10
@@ -5139,14 +4875,14 @@
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C859600F7"
-					client     	@194
-					supplier   	@152
+					client     	@188
+					supplier   	@153
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2687))
 					line_style 	0
-					label      	(object SegLabel @197
-					    Parent_View 	@196
+					label      	(object SegLabel @191
+					    Parent_View 	@190
 					    location   	(1201, 2679)
 					    font       	(object Font
 						size       	10
@@ -5166,8 +4902,8 @@
 					    pctDist    	0.900000
 					    height     	54
 					    orientation 	0))
-				    (object RoleView "$UNNAMED$155" @198
-					Parent_View 	@194
+				    (object RoleView "$UNNAMED$155" @192
+					Parent_View 	@188
 					location   	(778, 398)
 					font       	(object Font
 					    size       	10
@@ -5181,14 +4917,14 @@
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"691C85960100"
-					client     	@194
-					supplier   	@177
+					client     	@188
+					supplier   	@176
 					vertices   	(list Points
 					    (1147, 2603)
 					    (1147, 2519))
 					line_style 	0
-					label      	(object SegLabel @199
-					    Parent_View 	@198
+					label      	(object SegLabel @193
+					    Parent_View 	@192
 					    location   	(1202, 2528)
 					    font       	(object Font
 						size       	10
@@ -5208,6 +4944,126 @@
 					    pctDist    	0.900000
 					    height     	54
 					    orientation 	1))))
+			    (object ClassView "Class" "Use Case View::医院就诊系统::科室" @194
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1640, 543)
+				font       	(object Font
+				    size       	10
+				    face       	"Arial"
+				    bold       	FALSE
+				    italics    	FALSE
+				    underline  	FALSE
+				    strike     	FALSE
+				    color      	0
+				    default_color 	TRUE)
+				label      	(object ItemLabel
+				    Parent_View 	@194
+				    location   	(1513, 362)
+				    fill_color 	13434879
+				    nlines     	1
+				    max_width  	254
+				    justify    	0
+				    label      	"科室")
+				icon_style 	"Icon"
+				line_color 	3342489
+				fill_color 	13434879
+				quidu      	"691C7CD40021"
+				width      	272
+				height     	386
+				annotation 	8
+				autoResize 	TRUE)
+			    (object AssociationViewNew "被推荐" @195
+				location   	(1399, 1384)
+				font       	(object Font
+				    size       	10
+				    face       	"Arial"
+				    bold       	FALSE
+				    italics    	FALSE
+				    underline  	FALSE
+				    strike     	FALSE
+				    color      	0
+				    default_color 	TRUE)
+				label      	(object SegLabel @196
+				    Parent_View 	@195
+				    location   	(1399, 1325)
+				    font       	(object Font
+					size       	10
+					face       	"Arial"
+					bold       	FALSE
+					italics    	TRUE
+					underline  	FALSE
+					strike     	FALSE
+					color      	0
+					default_color 	TRUE)
+				    anchor     	1
+				    anchor_loc 	1
+				    nlines     	1
+				    max_width  	450
+				    justify    	0
+				    label      	"被推荐"
+				    pctDist    	0.500000
+				    height     	60
+				    orientation 	0)
+				stereotype 	TRUE
+				line_color 	3342489
+				quidu      	"691C847E027A"
+				roleview_list 	(list RoleViews
+				    (object RoleView "$UNNAMED$135" @197
+					Parent_View 	@195
+					location   	(1030, -821)
+					font       	(object Font
+					    size       	10
+					    face       	"Arial"
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	TRUE
+					line_color 	3342489
+					quidu      	"691C847F01A6"
+					client     	@195
+					supplier   	@194
+					vertices   	(list Points
+					    (1399, 1384)
+					    (1582, 736))
+					line_style 	0
+					label      	(object SegLabel @198
+					    Parent_View 	@197
+					    location   	(1617, 816)
+					    font       	(object Font
+						size       	10
+						face       	"Arial"
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	2
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	15
+					    justify    	0
+					    label      	"1"
+					    pctDist    	0.900000
+					    height     	54
+					    orientation 	1))
+				    (object RoleView "$UNNAMED$136" @199
+					Parent_View 	@195
+					location   	(1030, -821)
+					stereotype 	TRUE
+					line_color 	3342489
+					quidu      	"691C847F01AE"
+					client     	@195
+					supplier   	@176
+					vertices   	(list Points
+					    (1399, 1384)
+					    (1216, 2032))
+					line_style 	0)))
 			    (object ClassView "Class" "Use Case View::医院就诊系统::处方" @200
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
@@ -5234,24 +5090,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7F350318"
-				compartment 	(object Compartment
-				    Parent_View 	@200
-				    location   	(2583, 2026)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	8
-				    max_width  	359
-				    justify    	1)
 				width      	334
 				height     	486
 				annotation 	8
@@ -5642,24 +5480,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7D3C028A"
-				compartment 	(object Compartment
-				    Parent_View 	@219
-				    location   	(1590, 1634)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	9
-				    max_width  	384
-				    justify    	1)
 				width      	358
 				height     	536
 				annotation 	8
@@ -5716,10 +5536,10 @@
 					line_color 	3342489
 					quidu      	"691C84DF0086"
 					client     	@220
-					supplier   	@175
+					supplier   	@194
 					vertices   	(list Points
 					    (1695, 1148)
-					    (1657, 736))
+					    (1656, 736))
 					line_style 	0
 					label      	(object SegLabel @223
 					    Parent_View 	@222
@@ -5752,7 +5572,7 @@
 					supplier   	@219
 					vertices   	(list Points
 					    (1695, 1148)
-					    (1734, 1560))
+					    (1733, 1560))
 					line_style 	0)))
 			    (object AssociationViewNew "发起挂号" @225
 				location   	(1392, 1450)
@@ -5848,7 +5668,7 @@
 					line_color 	3342489
 					quidu      	"691C851D0384"
 					client     	@225
-					supplier   	@176
+					supplier   	@175
 					vertices   	(list Points
 					    (1392, 1450)
 					    (1204, 1257))
@@ -5968,7 +5788,7 @@
 					line_color 	3342489
 					quidu      	"691C8570036D"
 					client     	@231
-					supplier   	@177
+					supplier   	@176
 					vertices   	(list Points
 					    (1448, 2055)
 					    (1316, 2151))
@@ -6140,24 +5960,6 @@
 				line_color 	3342489
 				fill_color 	13434879
 				quidu      	"691C7CFF01A9"
-				compartment 	(object Compartment
-				    Parent_View 	@243
-				    location   	(2000, 927)
-				    font       	(object Font
-					size       	10
-					face       	"Arial"
-					bold       	FALSE
-					italics    	FALSE
-					underline  	FALSE
-					strike     	FALSE
-					color      	0
-					default_color 	TRUE)
-				    icon_style 	"Icon"
-				    fill_color 	13434879
-				    anchor     	2
-				    nlines     	7
-				    max_width  	259
-				    justify    	1)
 				width      	258
 				height     	436
 				annotation 	8
@@ -6217,7 +6019,7 @@
 					supplier   	@243
 					vertices   	(list Points
 					    (1883, 810)
-					    (1990, 928))
+					    (1990, 929))
 					line_style 	0
 					label      	(object SegLabel @247
 					    Parent_View 	@246
@@ -6256,10 +6058,10 @@
 					line_color 	3342489
 					quidu      	"691C81110200"
 					client     	@244
-					supplier   	@175
+					supplier   	@194
 					vertices   	(list Points
 					    (1883, 810)
-					    (1776, 693))
+					    (1776, 692))
 					line_style 	0
 					label      	(object SegLabel @249
 					    Parent_View 	@248
@@ -7405,15 +7207,409 @@
     process_structure 	(object Processes
 	quid       	"691AF938031E"
 	ProcsNDevs 	(list
+	    (object Processor "Web服务器(Nginx)"
+		quid       	"69204FE402E3"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"692056100322"
+			supplier   	"应用处理器（springboot)"
+			quidu      	"6920534A0280"
+			supplier_is_device 	FALSE))
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Processor "应用处理器（springboot)"
+		quid       	"6920534A0280"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"692054FB0281"
+			label      	"内部通信（REST API)"
+			supplier   	"数据库（MySQL)"
+			quidu      	"692054D002A8"
+			supplier_is_device 	FALSE))
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Processor "缓存处理器（Redis）"
+		quid       	"6920544403B6"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"6920560D03B5"
+			supplier   	"应用处理器（springboot)"
+			quidu      	"6920534A0280"
+			supplier_is_device 	FALSE))
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Processor "数据库（MySQL)"
+		quid       	"692054D002A8"
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Processor "短信服务服务器（阿里云）"
+		quid       	"6920554302E6"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"692055FB0243"
+			supplier   	"应用处理器（springboot)"
+			quidu      	"6920534A0280"
+			supplier_is_device 	FALSE))
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Processor "支付服务器（微信/支付宝）"
+		quid       	"6920556A00C7"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"6920560401F0"
+			supplier   	"应用处理器（springboot)"
+			quidu      	"6920534A0280"
+			supplier_is_device 	FALSE))
+		characteristics 	""
+		scheduling 	"Preemptive"
+		processes  	(list processes))
+	    (object Device "PC（病人使用）"
+		quid       	"69204FEF03CD"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"6920548803CF"
+			label      	"网络连接（HTTP协议）"
+			supplier   	"Web服务器(Nginx)"
+			quidu      	"69204FE402E3"
+			supplier_is_device 	FALSE))
+		characteristics 	"")
+	    (object Device "工作站（医护人员）"
+		quid       	"69204FFF0247"
+		connections 	(list connection_list
+		    (object Connection_Relationship
+			quid       	"69205495017D"
+			label      	"网络连接（HTTP协议）"
+			supplier   	"Web服务器(Nginx)"
+			quidu      	"69204FE402E3"
+			supplier_is_device 	FALSE))
+		characteristics 	"")
 	    (object Process_Diagram "Deployment View"
 		quid       	"691AF9380320"
 		title      	"Deployment View"
 		zoom       	100
 		max_height 	28350
 		max_width  	21600
-		origin_x   	0
+		origin_x   	175
 		origin_y   	0
-		items      	(list diagram_item_list))))
+		items      	(list diagram_item_list
+		    (object ProcessorView "Web服务器(Nginx)" @313
+			location   	(2050, 1038)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@313
+			    location   	(1839, 907)
+			    nlines     	2
+			    max_width  	350
+			    justify    	0
+			    label      	"Web服务器(Nginx)")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"69204FE402E3"
+			width      	425
+			height     	332
+			annotation 	0)
+		    (object DeviceView "PC（病人使用）" @314
+			location   	(1284, 356)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@314
+			    location   	(1123, 263)
+			    nlines     	2
+			    max_width  	251
+			    justify    	0
+			    label      	"PC（病人使用）")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"69204FEF03CD"
+			width      	326
+			height     	256
+			annotation 	0)
+		    (object DeviceView "工作站（医护人员）" @315
+			location   	(2724, 342)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@315
+			    location   	(2557, 242)
+			    nlines     	2
+			    max_width  	262
+			    justify    	0
+			    label      	"工作站（医护人员）")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"69204FFF0247"
+			width      	337
+			height     	269
+			annotation 	0)
+		    (object ProcessorView "应用处理器（springboot)" @316
+			location   	(2055, 1513)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@316
+			    location   	(1844, 1379)
+			    nlines     	2
+			    max_width  	351
+			    justify    	0
+			    label      	"应用处理器（springboot)")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"6920534A0280"
+			width      	426
+			height     	338
+			annotation 	0)
+		    (object ProcessorView "缓存处理器（Redis）" @317
+			location   	(2089, 2159)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@317
+			    location   	(1903, 2044)
+			    nlines     	2
+			    max_width  	300
+			    justify    	0
+			    label      	"缓存处理器（Redis）")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"6920544403B6"
+			width      	375
+			height     	300
+			annotation 	0)
+		    (object ConnectionView "网络连接（HTTP协议）" @318
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@318
+			    location   	(1627, 697)
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	490
+			    justify    	0
+			    label      	"网络连接（HTTP协议）")
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"6920548803CF"
+			client     	@314
+			supplier   	@313
+			vertices   	(list Points
+			    (1416, 356)
+			    (1838, 1038))
+			line_style 	0)
+		    (object ConnectionView "网络连接（HTTP协议）" @319
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@319
+			    location   	(2387, 682)
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	490
+			    justify    	0
+			    label      	"网络连接（HTTP协议）")
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"69205495017D"
+			client     	@315
+			supplier   	@313
+			vertices   	(list Points
+			    (2724, 476)
+			    (2050, 887))
+			line_style 	0)
+		    (object ProcessorView "数据库（MySQL)" @320
+			location   	(3527, 1505)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@320
+			    location   	(3325, 1380)
+			    nlines     	2
+			    max_width  	332
+			    justify    	0
+			    label      	"数据库（MySQL)")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"692054D002A8"
+			width      	407
+			height     	319
+			annotation 	0)
+		    (object ConnectionView "内部通信（REST API)" @321
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@321
+			    location   	(2780, 1509)
+			    anchor_loc 	1
+			    nlines     	1
+			    max_width  	443
+			    justify    	0
+			    label      	"内部通信（REST API)")
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"692054FB0281"
+			client     	@316
+			supplier   	@320
+			vertices   	(list Points
+			    (2237, 1513)
+			    (3324, 1505))
+			line_style 	0)
+		    (object ProcessorView "短信服务服务器（阿里云）" @322
+			location   	(450, 1916)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@322
+			    location   	(258, 1795)
+			    nlines     	2
+			    max_width  	313
+			    justify    	0
+			    label      	"短信服务服务器（阿里云）")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"6920554302E6"
+			width      	388
+			height     	312
+			annotation 	0)
+		    (object ProcessorView "支付服务器（微信/支付宝）" @323
+			location   	(1286, 1926)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@323
+			    location   	(1084, 1798)
+			    nlines     	2
+			    max_width  	332
+			    justify    	0
+			    label      	"支付服务器（微信/支付宝）")
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"6920556A00C7"
+			width      	407
+			height     	325
+			annotation 	0)
+		    (object ConnectionView "" @324
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"692055FB0243"
+			client     	@322
+			supplier   	@316
+			vertices   	(list Points
+			    (613, 1916)
+			    (1842, 1513))
+			line_style 	0)
+		    (object ConnectionView "" @325
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"6920560401F0"
+			client     	@323
+			supplier   	@316
+			vertices   	(list Points
+			    (1458, 1926)
+			    (1842, 1513))
+			line_style 	0)
+		    (object ConnectionView "" @326
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"6920560D03B5"
+			client     	@317
+			supplier   	@316
+			vertices   	(list Points
+			    (2089, 2024)
+			    (2055, 1682))
+			line_style 	0)
+		    (object ConnectionView "" @327
+			stereotype 	TRUE
+			line_color 	3342489
+			quidu      	"692056100322"
+			client     	@313
+			supplier   	@316
+			vertices   	(list Points
+			    (2050, 1204)
+			    (2055, 1359))
+			line_style 	0)))))
     properties 	(object Properties
 	attributes 	(list Attribute_Set
 	    (object Attribute
