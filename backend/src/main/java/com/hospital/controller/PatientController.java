@@ -1,50 +1,59 @@
 package com.hospital.controller;
 
-import com.hospital.dto.PatientRequest;
 import com.hospital.model.Patient;
-import com.hospital.model.User;
 import com.hospital.service.PatientService;
-import com.hospital.service.UserService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
-@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class PatientController {
 
     private final PatientService patientService;
-    private final UserService userService;
 
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
+
+    /**
+     * 查询某个用户的全部就诊人
+     * GET /api/patients?userId=1
+     */
     @GetMapping
-    public List<Patient> list(@RequestHeader("X-USER-ID") Long userId) {
-        User owner = userService.getById(userId);
-        return patientService.list(owner);
+    public List<Patient> listMyPatients(@RequestParam("userId") Long userId) {
+        return patientService.listByUser(userId);
     }
 
+    /**
+     * 新增就诊人
+     * POST /api/patients?userId=1
+     */
     @PostMapping
-    public Patient create(@RequestHeader("X-USER-ID") Long userId,
-                          @Valid @RequestBody PatientRequest request) {
-        User owner = userService.getById(userId);
-        request.setId(null);
-        return patientService.upsert(owner, request);
+    public Patient createPatient(@RequestParam("userId") Long userId,
+                                 @RequestBody Patient patient) {
+        return patientService.createPatient(userId, patient);
     }
 
+    /**
+     * 修改就诊人
+     * PUT /api/patients/{id}?userId=1
+     */
     @PutMapping("/{id}")
-    public Patient update(@RequestHeader("X-USER-ID") Long userId,
-                          @PathVariable Long id,
-                          @Valid @RequestBody PatientRequest request) {
-        User owner = userService.getById(userId);
-        request.setId(id);
-        return patientService.upsert(owner, request);
+    public Patient updatePatient(@PathVariable("id") Long patientId,
+                                 @RequestParam("userId") Long userId,
+                                 @RequestBody Patient patient) {
+        return patientService.updatePatient(userId, patientId, patient);
     }
 
+    /**
+     * 删除就诊人
+     * DELETE /api/patients/{id}?userId=1
+     */
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        patientService.delete(id);
+    public void deletePatient(@PathVariable("id") Long patientId,
+                              @RequestParam("userId") Long userId) {
+        patientService.deletePatient(userId, patientId);
     }
 }
-
