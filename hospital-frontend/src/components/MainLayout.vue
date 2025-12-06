@@ -18,8 +18,6 @@
           首页
         </button>
 
-        <!-- 🔥 门诊挂号菜单删掉，不再需要独立页面 -->
-
         <button
           class="menu-item"
           :class="{ active: activeMenu === 'patients' }"
@@ -31,8 +29,14 @@
         <button class="menu-item" disabled>
           候诊队列（待实现）
         </button>
-        <button class="menu-item" disabled>
-          用药与费用（待实现）
+
+        <!-- ⭐ 用药与费用：现在是可以点击的独立页面 -->
+        <button
+          class="menu-item"
+          :class="{ active: activeMenu === 'medication' }"
+          @click="activeMenu = 'medication'"
+        >
+          用药与费用
         </button>
       </nav>
 
@@ -58,7 +62,12 @@
         <PatientManager :user-id="currentUser.userId" />
       </section>
 
-      <!-- 其他占位 -->
+      <!-- ⭐ 用药与费用独立页面 -->
+      <section v-else-if="activeMenu === 'medication'" class="section">
+        <MedicationBillsPanel :user-id="currentUser.userId" />
+      </section>
+
+      <!-- 其他占位（理论上现在用不到） -->
       <section v-else class="section">
         <p>功能开发中...</p>
       </section>
@@ -76,7 +85,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import HomeOverviewPanel from './HomeOverviewPanel.vue'
 import PatientManager from './PatientManager.vue'
-import SmartTriagePanel from './SmartTriagePanel.vue' // ⭐ 新增：B 区组件
+import SmartTriagePanel from './SmartTriagePanel.vue'
+import MedicationBillsPanel from './MedicationBillsPanel.vue' // ⭐ 新增：用药与费用页面
 
 const router = useRouter()
 
