@@ -1,243 +1,271 @@
 <template>
-  <div class="triage-layout">
-    <!-- 左侧：智能分诊 + 直接挂号入口 -->
-    <div class="left-panel">
-      <h2 class="panel-title">智能分诊</h2>
-
-      <!-- 步骤一：选择不适部位 -->
-      <div class="form-group">
-        <label>① 不适部位</label>
-        <div class="body-part-list">
-          <button
-            v-for="part in bodyParts"
-            :key="part"
-            type="button"
-            class="tag-btn"
-            :class="{ active: formTriage.bodyPart === part }"
-            @click="formTriage.bodyPart = part"
-          >
-            {{ part }}
-          </button>
-        </div>
-      </div>
-
-      <!-- 步骤二：症状（多选） -->
-      <div class="form-group">
-        <label>② 主要症状（可多选）</label>
-        <div class="body-part-list">
-          <button
-            v-for="sym in currentSymptomOptions"
-            :key="sym"
-            type="button"
-            class="tag-btn"
-            :class="{ active: formTriage.symptoms.includes(sym) }"
-            @click="toggleSymptom(sym)"
-          >
-            {{ sym }}
-          </button>
-        </div>
-        <textarea
-          v-model="formTriage.extraDesc"
-          placeholder="可补充症状描述（选填）"
-          class="textarea"
-        ></textarea>
-      </div>
-
-      <!-- 步骤三：病情程度与持续时间 -->
-      <div class="form-row">
-        <div class="form-group half">
-          <label>③ 病情程度</label>
-          <select v-model="formTriage.severity" class="input">
-            <option disabled value="">请选择</option>
-            <option>轻度</option>
-            <option>中度</option>
-            <option>重度</option>
-          </select>
-        </div>
-        <div class="form-group half">
-          <label>④ 持续时间</label>
-          <select v-model="formTriage.duration" class="input">
-            <option disabled value="">请选择</option>
-            <option>&lt;24h</option>
-            <option>1-3天</option>
-            <option>&gt;3天</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>
-          <input type="checkbox" v-model="formTriage.emergency" />
-          是否疑似急诊（胸痛、呼吸困难、意识不清等）
-        </label>
-      </div>
-
-      <!-- 提交按钮 -->
-      <div class="form-actions">
-        <button type="button" class="primary-btn" @click="submitTriage">
-          开始智能分诊
+  <div class="triage-wrapper">
+    <!-- 顶部：科室切换 + 科室/医生介绍 -->
+    <div class="dept-intro-block" v-if="depts && depts.length">
+      <div class="dept-tabs">
+        <span class="tabs-label">科室：</span>
+        <button
+          v-for="d in depts"
+          :key="d.id"
+          type="button"
+          class="dept-tab"
+          :class="{ active: d.id === currentDeptId }"
+          @click="switchDeptFromIntro(d.id)"
+        >
+          {{ d.name }}
         </button>
       </div>
 
-      <hr class="divider" />
-
-      <!-- 直接挂号入口 -->
-      <div class="direct-register">
-        <p class="tip">
-          已经咨询过护士或熟悉流程？可以跳过智能分诊，直接挂号。
-        </p>
-        <button type="button" class="secondary-btn" @click="switchToDirectMode">
-          我已知道科室，直接挂号
-        </button>
-      </div>
+      <DeptDoctorIntro
+        v-if="overview"
+        :dept="overview.dept"
+        :doctors="overview.doctors"
+        :selectedDoctorId="selectedDoctorId"
+        @select-doctor="handleSelectDoctorFromIntro"
+      />
     </div>
 
-    <!-- 右侧：分诊结果 / 快速挂号 -->
-    <div class="right-panel">
-      <div class="mode-toggle">
-        <button
-          type="button"
-          class="tab-btn"
-          :class="{ active: mode === 'triage' }"
-          @click="switchToTriageMode"
-        >
-          分诊结果
-        </button>
-        <button
-          type="button"
-          class="tab-btn"
-          :class="{ active: mode === 'direct' }"
-          @click="switchToDirectMode"
-        >
-          直接/快速挂号
-        </button>
+    <!-- 中部：左侧智能分诊 + 右侧分诊结果/直接挂号 -->
+    <div class="triage-layout">
+      <!-- 左侧：智能分诊 + 直接挂号入口 -->
+      <div class="left-panel">
+        <h2 class="panel-title">智能分诊</h2>
+
+        <!-- 步骤一：选择不适部位 -->
+        <div class="form-group">
+          <label>① 不适部位</label>
+          <div class="body-part-list">
+            <button
+              v-for="part in bodyParts"
+              :key="part"
+              type="button"
+              class="tag-btn"
+              :class="{ active: formTriage.bodyPart === part }"
+              @click="formTriage.bodyPart = part"
+            >
+              {{ part }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 步骤二：症状（多选） -->
+        <div class="form-group">
+          <label>② 主要症状（可多选）</label>
+          <div class="body-part-list">
+            <button
+              v-for="sym in currentSymptomOptions"
+              :key="sym"
+              type="button"
+              class="tag-btn"
+              :class="{ active: formTriage.symptoms.includes(sym) }"
+              @click="toggleSymptom(sym)"
+            >
+              {{ sym }}
+            </button>
+          </div>
+          <textarea
+            v-model="formTriage.extraDesc"
+            placeholder="可补充症状描述（选填）"
+            class="textarea"
+          ></textarea>
+        </div>
+
+        <!-- 步骤三：病情程度与持续时间 -->
+        <div class="form-row">
+          <div class="form-group half">
+            <label>③ 病情程度</label>
+            <select v-model="formTriage.severity" class="input">
+              <option disabled value="">请选择</option>
+              <option>轻度</option>
+              <option>中度</option>
+              <option>重度</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label>④ 持续时间</label>
+            <select v-model="formTriage.duration" class="input">
+              <option disabled value="">请选择</option>
+              <option>&lt;24h</option>
+              <option>1-3天</option>
+              <option>&gt;3天</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" v-model="formTriage.emergency" />
+            是否疑似急诊（胸痛、呼吸困难、意识不清等）
+          </label>
+        </div>
+
+        <!-- 提交按钮 -->
+        <div class="form-actions">
+          <button type="button" class="primary-btn" @click="submitTriage">
+            开始智能分诊
+          </button>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- 直接挂号入口 -->
+        <div class="direct-register">
+          <p class="tip">
+            已经咨询过护士或熟悉流程？可以跳过智能分诊，直接挂号。
+          </p>
+          <button type="button" class="secondary-btn" @click="switchToDirectMode">
+            我已知道科室，直接挂号
+          </button>
+        </div>
       </div>
 
-      <!-- 模式 A：智能分诊结果 -->
-      <div v-if="mode === 'triage'" class="result-panel">
-        <h2 class="panel-title">分诊结果</h2>
+      <!-- 右侧：分诊结果 / 快速挂号 -->
+      <div class="right-panel">
+        <div class="mode-toggle">
+          <button
+            type="button"
+            class="tab-btn"
+            :class="{ active: mode === 'triage' }"
+            @click="switchToTriageMode"
+          >
+            分诊结果
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            :class="{ active: mode === 'direct' }"
+            @click="switchToDirectMode"
+          >
+            直接/快速挂号
+          </button>
+        </div>
 
-        <p v-if="!triageResult" class="placeholder">
-          请在左侧填写症状后，点击“开始智能分诊”，系统将为您推荐科室与医生。
-        </p>
+        <!-- 模式 A：智能分诊结果 -->
+        <div v-if="mode === 'triage'" class="result-panel">
+          <h2 class="panel-title">分诊结果</h2>
 
-        <div v-else>
-          <div class="card">
-            <h3>推荐科室</h3>
-            <p>主推荐科室：<strong>{{ triageResult.mainDeptName }}</strong></p>
-            <p v-if="triageResult.backupDeptName">
-              备选科室：{{ triageResult.backupDeptName }}
-            </p>
-            <p class="reason">推荐理由：{{ triageResult.reason }}</p>
-          </div>
+          <p v-if="!triageResult" class="placeholder">
+            请在左侧填写症状后，点击“开始智能分诊”，系统将为您推荐科室与医生。
+          </p>
 
-          <div class="card">
-            <h3>科室候诊情况</h3>
-            <table class="queue-table">
-              <thead>
-                <tr>
-                  <th>科室</th>
-                  <th>候诊人数</th>
-                  <th>预计等待时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="q in triageResult.queueInfo" :key="q.deptId">
-                  <td>{{ q.deptName }}</td>
-                  <td>{{ q.waitCount }} 人</td>
-                  <td>{{ q.estimateWaitMin }} 分钟</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <div v-else>
+            <div class="card">
+              <h3>推荐科室</h3>
+              <p>主推荐科室：<strong>{{ triageResult.mainDeptName }}</strong></p>
+              <p v-if="triageResult.backupDeptName">
+                备选科室：{{ triageResult.backupDeptName }}
+              </p>
+              <p class="reason">推荐理由：{{ triageResult.reason }}</p>
+            </div>
 
-          <div class="card">
-            <h3>推荐医生</h3>
-            <p v-if="!triageResult.doctors || !triageResult.doctors.length">
-              当前暂无推荐医生信息。
-            </p>
-            <ul v-else class="doctor-list">
-              <li
-                v-for="doc in triageResult.doctors"
-                :key="doc.doctorId || doc.id"
-                :class="{
-                  selected: selectedDoctorId === (doc.doctorId || doc.id)
-                }"
-                @click="selectDoctor(doc)"
+            <div class="card">
+              <h3>科室候诊情况</h3>
+              <table class="queue-table">
+                <thead>
+                  <tr>
+                    <th>科室</th>
+                    <th>候诊人数</th>
+                    <th>预计等待时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="q in triageResult.queueInfo" :key="q.deptId">
+                    <td>{{ q.deptName }}</td>
+                    <td>{{ q.waitCount }} 人</td>
+                    <td>{{ q.estimateWaitMin }} 分钟</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h3>推荐医生</h3>
+              <p v-if="!triageResult.doctors || !triageResult.doctors.length">
+                当前暂无推荐医生信息。
+              </p>
+              <ul v-else class="doctor-list">
+                <li
+                  v-for="doc in triageResult.doctors"
+                  :key="doc.doctorId || doc.id"
+                  :class="{
+                    selected: selectedDoctorId === (doc.doctorId || doc.id)
+                  }"
+                  @click="selectDoctor(doc)"
+                >
+                  <div class="doctor-name">
+                    {{ doc.doctorName || doc.name }}
+                    <span class="doctor-title">{{ doc.title }}</span>
+                  </div>
+                  <div class="doctor-wait">
+                    候诊人数：{{ doc.waitCount ?? 0 }} 人
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                class="primary-btn"
+                :disabled="!triageResult"
+                @click="oneClickRegister"
               >
-                <div class="doctor-name">
-                  {{ doc.doctorName || doc.name }}
-                  <span class="doctor-title">{{ doc.title }}</span>
-                </div>
-                <div class="doctor-wait">
-                  候诊人数：{{ doc.waitCount ?? 0 }} 人
-                </div>
-              </li>
-            </ul>
+                一键挂号到推荐科室
+              </button>
+              <button
+                type="button"
+                class="secondary-btn"
+                @click="switchToDirectMode"
+              >
+                选择其他科室/医生挂号
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模式 B：快速/直接挂号 -->
+        <div v-else class="result-panel">
+          <h2 class="panel-title">快速/直接挂号</h2>
+
+          <div class="form-group">
+            <label>科室</label>
+            <select v-model="direct.deptId" class="input" @change="onDeptChange">
+              <option disabled value="">请选择科室</option>
+              <option v-for="d in depts" :key="d.id" :value="d.id">
+                {{ d.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>医生</label>
+            <select
+              v-model="direct.doctorId"
+              class="input"
+              :disabled="!direct.deptId"
+            >
+              <option disabled value="">请选择医生</option>
+              <option v-for="doc in doctors" :key="doc.id" :value="doc.id">
+                {{ doc.name }}（{{ doc.title }}）
+              </option>
+            </select>
           </div>
 
           <div class="form-actions">
             <button
               type="button"
               class="primary-btn"
-              :disabled="!triageResult"
-              @click="oneClickRegister"
+              :disabled="!direct.deptId || !direct.doctorId"
+              @click="confirmDirectRegister"
             >
-              一键挂号到推荐科室
-            </button>
-            <button
-              type="button"
-              class="secondary-btn"
-              @click="switchToDirectMode"
-            >
-              选择其他科室/医生挂号
+              确认挂号
             </button>
           </div>
         </div>
       </div>
-
-      <!-- 模式 B：快速/直接挂号 -->
-      <div v-else class="result-panel">
-        <h2 class="panel-title">快速/直接挂号</h2>
-
-        <div class="form-group">
-          <label>科室</label>
-          <select v-model="direct.deptId" class="input" @change="onDeptChange">
-            <option disabled value="">请选择科室</option>
-            <option v-for="d in depts" :key="d.id" :value="d.id">
-              {{ d.name }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>医生</label>
-          <select
-            v-model="direct.doctorId"
-            class="input"
-            :disabled="!direct.deptId"
-          >
-            <option disabled value="">请选择医生</option>
-            <option v-for="doc in doctors" :key="doc.id" :value="doc.id">
-              {{ doc.name }}（{{ doc.title }}）
-            </option>
-          </select>
-        </div>
-
-        <div class="form-actions">
-          <button
-            type="button"
-            class="primary-btn"
-            :disabled="!direct.deptId || !direct.doctorId"
-            @click="confirmDirectRegister"
-          >
-            确认挂号
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- 选择 / 新增就诊人 弹窗 -->
+    <!-- 底部：选择 / 新增就诊人 弹窗 -->
     <div v-if="showPatientDialog" class="dialog-mask">
       <div class="dialog">
         <h3>选择就诊人</h3>
@@ -318,11 +346,17 @@ import {
   postTriageAdvise,
   getPatients,
   createPatient,
-  createRegister
+  createRegister,
+  getDeptOverview
 } from '@/api/triage';
+
+import DeptDoctorIntro from './DeptDoctorIntro.vue';
 
 export default {
   name: 'SmartTriagePanel',
+  components: {
+    DeptDoctorIntro
+  },
   props: {
     userId: {
       type: Number,
@@ -354,6 +388,9 @@ export default {
 
       depts: [],
       doctors: [],
+      overview: null,        // 科室+医生介绍
+      currentDeptId: null,   // 顶部介绍区域当前选中的科室
+
       direct: {
         deptId: '',
         doctorId: ''
@@ -384,26 +421,86 @@ export default {
       try {
         const resp = await getDepts();
         this.depts = (resp.data && resp.data.data) || [];
+
+        // 默认选中第一个科室
+        if (this.depts.length > 0 && !this.direct.deptId) {
+          this.currentDeptId = this.depts[0].id;
+          this.direct.deptId = this.depts[0].id;
+          await this.onDeptChange();
+        }
       } catch (e) {
         console.error(e);
         alert('加载科室失败');
       }
     },
+
     async onDeptChange() {
       this.direct.doctorId = '';
       this.selectedDoctorId = null;
+
       if (!this.direct.deptId) {
         this.doctors = [];
+        this.overview = null;
         return;
       }
+
       try {
-        const resp = await getDoctors(this.direct.deptId);
-        this.doctors = (resp.data && resp.data.data) || [];
+        const [docResp, overviewResp] = await Promise.all([
+          getDoctors(this.direct.deptId),
+          getDeptOverview(this.direct.deptId)
+        ]);
+
+        this.doctors = (docResp.data && docResp.data.data) || [];
+        this.overview = overviewResp.data && overviewResp.data.data;
+
+        // 如果已经有选中的医生，并且在新列表里，就自动选中
+        if (this.selectedDoctorId) {
+          const exists = this.doctors.some(
+            (d) => d.id === this.selectedDoctorId
+          );
+          if (exists) {
+            this.direct.doctorId = this.selectedDoctorId;
+          }
+        }
       } catch (e) {
         console.error(e);
-        alert('加载医生失败');
+        alert('加载医生或科室介绍失败');
       }
     },
+
+    // 顶部科室 tab 切换
+    async switchDeptFromIntro(deptId) {
+      if (deptId === this.currentDeptId) return;
+      this.currentDeptId = deptId;
+      this.direct.deptId = deptId; // 同步到右侧挂号区
+      await this.onDeptChange();
+    },
+
+    // 从上方医生介绍区域选择医生
+    async handleSelectDoctorFromIntro(doc) {
+      if (!this.overview || !this.overview.dept) return;
+
+      this.mode = 'direct';
+      this.selectedDoctorId = doc.id;
+
+      const deptId = this.overview.dept.id;
+
+      // 如果当前挂号区科室不是这个科室，切过去
+      if (this.direct.deptId !== deptId) {
+        this.direct.deptId = deptId;
+        this.currentDeptId = deptId;
+        await this.onDeptChange();
+      }
+
+      // 确保医生列表里有这个医生
+      const exists = this.doctors.some((d) => d.id === doc.id);
+      if (!exists) {
+        await this.onDeptChange();
+      }
+
+      this.direct.doctorId = doc.id;
+    },
+
     toggleSymptom(sym) {
       const idx = this.formTriage.symptoms.indexOf(sym);
       if (idx >= 0) {
@@ -412,6 +509,7 @@ export default {
         this.formTriage.symptoms.push(sym);
       }
     },
+
     async submitTriage() {
       if (!this.formTriage.bodyPart) {
         alert('请先选择不适部位');
@@ -432,12 +530,15 @@ export default {
         alert('智能分诊接口异常');
       }
     },
+
     switchToDirectMode() {
       this.mode = 'direct';
     },
+
     switchToTriageMode() {
       this.mode = 'triage';
     },
+
     selectDoctor(doc) {
       const id = doc.doctorId || doc.id;
       this.selectedDoctorId = id;
@@ -446,6 +547,7 @@ export default {
         this.direct.doctorId = id;
       }
     },
+
     oneClickRegister() {
       if (!this.triageResult) {
         alert('请先进行智能分诊');
@@ -464,6 +566,7 @@ export default {
       };
       this.openPatientDialog();
     },
+
     confirmDirectRegister() {
       if (!this.direct.deptId || !this.direct.doctorId) {
         alert('请先选择科室和医生');
@@ -476,6 +579,7 @@ export default {
       };
       this.openPatientDialog();
     },
+
     // 打开就诊人弹窗：加载列表 + 默认选中第一个
     async openPatientDialog() {
       try {
@@ -504,10 +608,12 @@ export default {
       this.newPatient = { name: '', phone: '', idType: '', idCard: '' };
       this.showPatientDialog = true;
     },
+
     closePatientDialog() {
       this.showPatientDialog = false;
       this.pendingRegister = null;
     },
+
     async saveNewPatient() {
       if (!this.newPatient.name || !this.newPatient.phone) {
         alert('新增就诊人至少填写姓名和电话');
@@ -530,11 +636,12 @@ export default {
           this.patients = [];
         }
 
-        this.selectedPatientId = created && created.id
-          ? created.id
-          : created && created.patientId
-          ? created.patientId
-          : null;
+        this.selectedPatientId =
+          created && created.id
+            ? created.id
+            : created && created.patientId
+            ? created.patientId
+            : null;
 
         alert('新增就诊人成功');
       } catch (e) {
@@ -542,13 +649,12 @@ export default {
         alert('新增就诊人失败');
       }
     },
+
     async submitRegister() {
       if (!this.pendingRegister) {
         alert('内部错误：缺少挂号信息');
         return;
       }
-
-      console.log('当前选中的就诊人ID：', this.selectedPatientId);
 
       if (
         this.selectedPatientId === null ||
@@ -584,10 +690,53 @@ export default {
 </script>
 
 <style scoped>
+.triage-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 顶部科室介绍块 */
+.dept-intro-block {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 16px 8px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+}
+
+.dept-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tabs-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.dept-tab {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.dept-tab.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+/* 中部左右布局 */
 .triage-layout {
   display: flex;
   gap: 16px;
 }
+
 .left-panel,
 .right-panel {
   flex: 1;
@@ -596,21 +745,26 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
+
 .panel-title {
   margin-bottom: 12px;
   font-size: 18px;
   font-weight: 600;
 }
+
 .form-group {
   margin-bottom: 12px;
 }
+
 .form-row {
   display: flex;
   gap: 12px;
 }
+
 .form-row .half {
   flex: 1;
 }
+
 .input,
 select,
 textarea {
@@ -620,15 +774,18 @@ textarea {
   border: 1px solid #dcdfe6;
   box-sizing: border-box;
 }
+
 .textarea {
   min-height: 60px;
   resize: vertical;
 }
+
 .body-part-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
+
 .tag-btn {
   padding: 4px 10px;
   border-radius: 16px;
@@ -637,16 +794,19 @@ textarea {
   cursor: pointer;
   font-size: 13px;
 }
+
 .tag-btn.active {
   background: #409eff;
   color: #fff;
   border-color: #409eff;
 }
+
 .form-actions {
   margin-top: 12px;
   display: flex;
   gap: 8px;
 }
+
 .primary-btn,
 .secondary-btn,
 .tab-btn {
@@ -656,69 +816,83 @@ textarea {
   cursor: pointer;
   font-size: 14px;
 }
+
 .primary-btn {
   background: #409eff;
   color: #fff;
   border-color: #409eff;
 }
+
 .primary-btn:disabled {
   background: #c0c4cc;
   border-color: #c0c4cc;
   cursor: not-allowed;
 }
+
 .secondary-btn {
   background: #fff;
   color: #606266;
   border-color: #dcdfe6;
 }
+
 .divider {
   margin: 16px 0;
   border: none;
   border-top: 1px dashed #e4e7ed;
 }
+
 .tip {
   font-size: 13px;
   color: #909399;
   margin-bottom: 8px;
 }
+
 .mode-toggle {
   margin-bottom: 12px;
 }
+
 .tab-btn {
   margin-right: 8px;
   background: #f5f7fa;
 }
+
 .tab-btn.active {
   background: #409eff;
   color: #fff;
   border-color: #409eff;
 }
+
 .placeholder {
   color: #909399;
   font-size: 13px;
 }
+
 .card {
   margin-bottom: 12px;
   padding: 10px;
   border-radius: 6px;
   background: #f9fafc;
 }
+
 .queue-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
 }
+
 .queue-table th,
 .queue-table td {
   border: 1px solid #ebeef5;
   padding: 4px 6px;
   text-align: center;
 }
+
 .doctor-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .doctor-list li {
   display: flex;
   justify-content: space-between;
@@ -729,10 +903,13 @@ textarea {
   margin-bottom: 6px;
   cursor: pointer;
 }
+
 .doctor-list li.selected {
   border-color: #409eff;
   background: #ecf5ff;
 }
+
+/* 弹窗样式 */
 .dialog-mask {
   position: fixed;
   inset: 0;
@@ -742,6 +919,7 @@ textarea {
   align-items: center;
   z-index: 2000;
 }
+
 .dialog {
   width: 520px;
   max-width: 90%;
@@ -749,16 +927,19 @@ textarea {
   border-radius: 8px;
   padding: 16px;
 }
+
 .dialog-body {
   max-height: 340px;
   overflow: auto;
   margin: 8px 0;
 }
+
 .patient-list {
   list-style: none;
   padding: 0;
   margin: 0 0 10px 0;
 }
+
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
