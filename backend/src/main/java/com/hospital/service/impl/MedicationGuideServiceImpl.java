@@ -4,7 +4,7 @@ import com.hospital.model.MedicationGuide;
 import com.hospital.repository.MedicationGuideRepository;
 import com.hospital.service.MedicationGuideService;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,4 +25,10 @@ public class MedicationGuideServiceImpl implements MedicationGuideService {
     public MedicationGuide save(MedicationGuide guide) {
         return repository.save(guide);
     }
+
+    @Override
+    public List<MedicationGuide> listByUserId(Long userId) {
+        return repository.findByUserIdOrderByCreateTimeDesc(userId);
+    }
 }
+
