@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Collection;
 
 public interface RegisterRepository extends JpaRepository<RegisterRecord, Long> {
 
@@ -40,4 +41,10 @@ public interface RegisterRepository extends JpaRepository<RegisterRecord, Long> 
     // 按医生统计今日 WAITING 数量（用于医生列表）
     long countByDoctorIdAndRegisterTimeBetweenAndStatus(
             Long doctorId, LocalDateTime start, LocalDateTime end, String status);
+    long countByDoctorIdAndRegisterTimeBetweenAndStatusIn(
+            Long doctorId,
+            LocalDateTime start,
+            LocalDateTime end,
+            Collection<String> statusList
+    );
 }
