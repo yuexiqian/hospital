@@ -15,6 +15,15 @@ export function getDoctors(deptId) {
   });
 }
 
+// ⭐ 新增：获取科室+医生总览（科室介绍 + 今日坐诊医生+号源）
+export function getDeptOverview(deptId, date) {
+  return axios.get(`${BASE_URL}/depts/${deptId}/overview`, {
+    params: date ? { date } : {}
+  });
+}
+
+
+
 // 智能分诊接口
 export function postTriageAdvise(payload) {
   return axios.post(`${BASE_URL}/triage/advise`, payload);
