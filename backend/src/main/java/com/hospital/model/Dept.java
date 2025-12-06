@@ -26,7 +26,7 @@ public class Dept {
     @Column(length = 20)
     private String type;
 
-    /** 楼层/位置 */
+    /** 楼层/位置（简单描述即可，如 "2F"、"3F东区"） */
     @Column(length = 20)
     private String floor;
 
@@ -35,4 +35,22 @@ public class Dept {
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
+
+    /* =============== 升级版科室介绍字段 =============== */
+
+    /** 科室简介：主要负责什么疾病，服务对象等 */
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    /** 门诊位置：更详细的位置描述，如 "门诊楼2F-203" */
+    @Column(length = 100)
+    private String location;
+
+    /** 门诊时间，如 "周一至周五 8:00-17:30" */
+    @Column(name = "opening_hours", length = 100)
+    private String openingHours;
+
+    /** 科室擅长疾病/特色，如 "哮喘、慢性咳嗽、支气管炎等" */
+    @Column(length = 255)
+    private String specialty;
 }
