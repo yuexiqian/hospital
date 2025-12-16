@@ -10,6 +10,9 @@ public class BillsSummaryDTO {
     /** 待缴费笔数 */
     private long unpaidCount;
 
-    /** 待缴费总金额 */
+    /** 待缴费金额 */
     private BigDecimal unpaidAmount;
+
+    /** 历史已缴费总额 */
+    private BigDecimal paidTotal;
 }

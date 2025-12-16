@@ -1,4 +1,3 @@
-<!-- src/views/LoginPage.vue -->
 <template>
   <div class="auth-container">
     <div class="auth-card">
@@ -111,19 +110,56 @@ const registerForm = reactive({
 const message = ref('')
 const isError = ref(false)
 
-// 当前登录用户（这里只用来判断是否已经登录，登录后直接跳转）
+// 当前登录用户
 const currentUser = ref(null)
 
 // 后端接口基础地址
 const BASE_URL = 'http://localhost:8080/api/auth'
 
-// 页面加载时，如果已经登录过，就直接跳到 /patient
+// 按角色跳转到各自首页
+const goHomeByRole = (user) => {
+  if (!user || !user.role) {
+    router.push('/patient')
+    return
+  }
+  switch (user.role) {
+    case 'PATIENT':
+      router.push('/patient')
+      break
+    case 'NURSE':
+      router.push('/nurse/queue')
+      break
+    case 'DOCTOR':
+  // ⭐ 医生端：带上 doctorId 作为路由参数
+     if (user.doctorId) {
+       router.push({
+         path: '/doctor/queue',
+         query: { doctorId: user.doctorId }
+       })
+     } else {
+    // 没有 doctorId 也先让他进队列页，后面页面里再兜底处理
+       router.push('/doctor/queue')
+     }
+     break
+
+    case 'PHARMACIST':
+      router.push('/pharmacist')
+      break
+    case 'ADMIN':
+      router.push('/admin')
+      break
+    default:
+      router.push('/patient')
+  }
+}
+
+// 页面加载时，如果已经登录过，就按角色直接跳转
 onMounted(() => {
   const saved = localStorage.getItem('currentUser')
   if (saved) {
     try {
       currentUser.value = JSON.parse(saved)
-      router.push('/patient')
+      goHomeByRole(currentUser.value)
     } catch (e) {
       console.error(e)
     }
@@ -133,21 +169,32 @@ onMounted(() => {
 // 登录
 const handleLogin = async () => {
   message.value = ''
+  isError.value = false
+
   try {
     const resp = await axios.post(`${BASE_URL}/login`, {
       loginName: loginForm.loginName,
       password: loginForm.password
     })
+
+    console.log('login resp:', resp.data)
+
     if (resp.data.code === 0) {
       const user = resp.data.data
-      isError.value = false
-      message.value = '登录成功，正在进入系统...'
+      if (!user) {
+        isError.value = true
+        message.value = '登录失败：返回用户信息为空'
+        return
+      }
 
-      // 保存用户信息到 localStorage
+      // ⭐ 关键：把后端 data 原样保存（包含 doctorId / name / role 等）
       localStorage.setItem('currentUser', JSON.stringify(user))
+      currentUser.value = user
 
-      // 跳转到患者主界面
-      router.push('/patient')
+      message.value = '登录成功，正在进入系统...'
+      isError.value = false
+
+      goHomeByRole(user)
     } else {
       isError.value = true
       message.value = resp.data.message || '登录失败'
@@ -159,7 +206,7 @@ const handleLogin = async () => {
   }
 }
 
-// 注册
+// 注册（患者）
 const handleRegister = async () => {
   message.value = ''
   if (registerForm.password !== registerForm.confirmPassword) {
@@ -195,7 +242,6 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* 直接沿用你原来的样式 */
 .auth-container {
   min-height: 100vh;
   display: flex;

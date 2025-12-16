@@ -30,11 +30,11 @@
           候诊队列（待实现）
         </button>
 
-        <!-- ⭐ 用药与费用：现在是可以点击的独立页面 -->
+        <!-- ⭐ 用药与费用：作为一个独立页面，key 用 'bills' 更清晰 -->
         <button
           class="menu-item"
-          :class="{ active: activeMenu === 'medication' }"
-          @click="activeMenu = 'medication'"
+          :class="{ active: activeMenu === 'bills' }"
+          @click="activeMenu = 'bills'"
         >
           用药与费用
         </button>
@@ -62,8 +62,8 @@
         <PatientManager :user-id="currentUser.userId" />
       </section>
 
-      <!-- ⭐ 用药与费用独立页面 -->
-      <section v-else-if="activeMenu === 'medication'" class="section">
+      <!-- ⭐ 用药与费用独立页面（里面自己再分“用药指导 / 费用信息”两个 Tab） -->
+      <section v-else-if="activeMenu === 'bills'" class="section">
         <MedicationBillsPanel :user-id="currentUser.userId" />
       </section>
 
@@ -86,11 +86,12 @@ import { useRouter } from 'vue-router'
 import HomeOverviewPanel from './HomeOverviewPanel.vue'
 import PatientManager from './PatientManager.vue'
 import SmartTriagePanel from './SmartTriagePanel.vue'
-import MedicationBillsPanel from './MedicationBillsPanel.vue' // ⭐ 新增：用药与费用页面
+import MedicationBillsPanel from './MedicationBillsPanel.vue'
 
 const router = useRouter()
 
 const currentUser = ref(null)
+// 默认打开首页
 const activeMenu = ref('home')
 
 // 页面加载时读取登录用户
